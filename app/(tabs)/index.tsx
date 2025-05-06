@@ -1,6 +1,6 @@
-import SurveyItem from "@/components/Survey/SurveyItem";
-import { useSurvey } from "@/hooks/useSurvey";
-import { router } from "expo-router";
+import SurveyItem from '@/components/Survey/SurveyItem';
+import { useSurvey } from '@/hooks/useSurvey';
+import { router } from 'expo-router';
 import {
   ActivityIndicator,
   FlatList,
@@ -10,26 +10,25 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
-  console.log('-------------')
-  console.log("Updates::");
+  console.log('-------------');
+  console.log('Updates::');
   const { loading, surveys, isRefreshing, pullToRefresh } = useSurvey();
-  
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={[styles.container,Platform.OS === 'android' ? {marginTop: 36}: '']}>
+      <SafeAreaView style={[styles.container, Platform.OS === 'android' ? { marginTop: 36 } : '']}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => router.push("/(modals)/survey-form")}
+          onPress={() => router.push('/(modals)/survey-form')}
         >
-          <Text style={{ color: "white", fontSize: 18 }}>Open survey form</Text>
+          <Text style={{ color: 'white', fontSize: 18 }}>Open survey form</Text>
         </TouchableOpacity>
         {loading ? (
-          <ActivityIndicator size={"large"} />
+          <ActivityIndicator size={'large'} />
         ) : (
           <FlatList
             data={surveys}
@@ -38,9 +37,7 @@ export default function HomeScreen() {
             renderItem={({ item }) => <SurveyItem {...item} />}
             keyExtractor={(item) => item.id.toString()}
             ListHeaderComponent={
-              <View>
-                {surveys?.length === 0 && <Text>Không có survey nào</Text>}
-              </View>
+              <View>{surveys?.length === 0 && <Text>Không có survey nào</Text>}</View>
             }
           />
         )}
@@ -53,11 +50,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: "#fff",
-    alignItems: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
   },
   button: {
-    backgroundColor: "#33CCFF",
+    backgroundColor: '#33CCFF',
     padding: 10,
     borderRadius: 8,
     marginBottom: 10,

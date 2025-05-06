@@ -1,7 +1,7 @@
-import { Gender } from "@/enums/Gender";
+import { Gender } from '@/enums/Gender';
 
 export interface SurveyResponse {
-  id: number,
+  id: number;
   fullName: string;
   email: string;
   age: number;
@@ -12,5 +12,5 @@ export interface SurveyResponse {
   rating: number;
   today: Date;
   color: string;
-  agree: boolean
-};
+  agree: boolean;
+}

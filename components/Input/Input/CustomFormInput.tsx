@@ -1,7 +1,7 @@
-import { KeyboardType } from "@/enums/KeyboardType";
-import React from "react";
-import { useController } from "react-hook-form";
-import { StyleSheet, Text, TextInput } from "react-native";
+import { KeyboardType } from '@/enums/KeyboardType';
+import React from 'react';
+import { useController } from 'react-hook-form';
+import { StyleSheet, Text, TextInput } from 'react-native';
 
 interface CustomFormInputProps {
   title: string;
@@ -40,12 +40,13 @@ const CustomFormInput = ({
     control,
     rules: {
       ...(requiredMessage && { required: requiredMessage }),
-      ...(regex && patternMessage && {
-        pattern: {
-          value: regex,
-          message: patternMessage,
-        },
-      }),
+      ...(regex &&
+        patternMessage && {
+          pattern: {
+            value: regex,
+            message: patternMessage,
+          },
+        }),
       ...(minValue !== undefined && {
         min: {
           value: minValue,
@@ -60,28 +61,23 @@ const CustomFormInput = ({
       }),
     },
   });
-  console.log("CUSTOM INPUT::")
+  console.log('CUSTOM INPUT::');
   return (
     <>
       <Text style={styles.title}>{title}</Text>
       <TextInput
-        style={[
-          styles.input,
-          error && { borderColor: "red" },
-          multiline && { height: 100 },
-        ]}
+        style={[styles.input, error && { borderColor: 'red' }, multiline && { height: 100 }]}
         placeholder={placeholder || `Enter your ${title.toLowerCase()}`}
         value={value}
         onChangeText={(text) => {
-          const parsedValue =
-            keyboardType === KeyboardType.NUMPAD ? Number(text) : text;
+          const parsedValue = keyboardType === KeyboardType.NUMPAD ? Number(text) : text;
           onChange(parsedValue);
         }}
         keyboardType={keyboardType}
         multiline={multiline}
         maxLength={maxLength}
       />
-      {error && <Text style={{ color: "red" }}>{error.message}</Text>}
+      {error && <Text style={{ color: 'red' }}>{error.message}</Text>}
     </>
   );
 };
@@ -91,15 +87,15 @@ export default React.memo(CustomFormInput);
 const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 8,
     fontSize: 16,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   title: {
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 4,
   },
 });

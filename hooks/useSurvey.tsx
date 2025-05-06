@@ -1,7 +1,7 @@
-import { SurveyResponse } from "@/models/survey.model";
-import { fetchSurvey } from "@/services/survey.services";
-import { useCallback, useEffect, useState } from "react";
-import Toast from "react-native-toast-message";
+import { SurveyResponse } from '@/models/survey.model';
+import { fetchSurvey } from '@/services/survey.services';
+import { useCallback, useEffect, useState } from 'react';
+import Toast from 'react-native-toast-message';
 
 export function useSurvey() {
   const [surveys, setSurveys] = useState<SurveyResponse[]>();
@@ -15,7 +15,7 @@ export function useSurvey() {
       setSurveys(res);
     } catch (error: any) {
       Toast.show({
-        type: "error",
+        type: 'error',
         text1: error.message,
       });
     } finally {
@@ -32,7 +32,6 @@ export function useSurvey() {
   useEffect(() => {
     handleGetAllSurveys();
   }, []);
-
 
   return {
     surveys,

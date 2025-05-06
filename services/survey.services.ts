@@ -1,12 +1,10 @@
-import { SurveyResponse } from "@/models/survey.model";
-import axios from "axios";
-import Toast from "react-native-toast-message";
+import { SurveyResponse } from '@/models/survey.model';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 export const fetchSurvey = async (): Promise<SurveyResponse[]> => {
   try {
-    const res = await axios.get<any, SurveyResponse[]>(
-      "http://10.10.112.192:3001/surveys"
-    );
+    const res = await axios.get<any, SurveyResponse[]>('http://10.10.112.192:3001/surveys');
     const { data } = res;
     return data;
   } catch (error: any) {
@@ -18,13 +16,10 @@ export const fetchSurvey = async (): Promise<SurveyResponse[]> => {
 };
 
 export const submitSurveys = async (
-  survey: SurveyResponse
+  survey: SurveyResponse,
 ): Promise<SurveyResponse | undefined> => {
   try {
-    const res = await axios.post<SurveyResponse>(
-      "http://10.10.112.192:3001/surveys",
-      survey
-    );
+    const res = await axios.post<SurveyResponse>('http://10.10.112.192:3001/surveys', survey);
     const { data } = res;
     return data;
   } catch (error: any) {

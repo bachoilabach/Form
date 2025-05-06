@@ -1,12 +1,11 @@
-import CustomFormInput from "@/components/Input/Input/CustomFormInput";
-import CustomSwitch from "@/components/Input/Input/CustomSwitch";
-import DateInput from "@/components/Input/Input/DateInput";
-import SelectInput from "@/components/Input/Input/SelectInput";
-
+import CustomFormInput from '@/components/Input/Input/CustomFormInput';
+import CustomSwitch from '@/components/Input/Input/CustomSwitch';
+import DateInput from '@/components/Input/Input/DateInput';
+import SelectInput from '@/components/Input/Input/SelectInput';
 
 export const renderField = (field: any, control: any, errors: any) => {
   switch (field.type) {
-    case "input":
+    case 'input':
       return (
         <CustomFormInput
           key={field.name}
@@ -23,7 +22,7 @@ export const renderField = (field: any, control: any, errors: any) => {
           maxValue={field.maxValue}
         />
       );
-    case "select":
+    case 'select':
       return (
         <SelectInput
           key={field.name}
@@ -35,7 +34,7 @@ export const renderField = (field: any, control: any, errors: any) => {
           name={field.name}
         />
       );
-    case "date":
+    case 'date':
       return (
         <DateInput
           key={field.name}
@@ -47,14 +46,9 @@ export const renderField = (field: any, control: any, errors: any) => {
           mode={field.mode}
         />
       );
-    case "switch":
+    case 'switch':
       return (
-        <CustomSwitch
-          key={field.name}
-          title={field.title}
-          name={field.name}
-          control={control}
-        />
+        <CustomSwitch key={field.name} title={field.title} name={field.name} control={control} />
       );
     default:
       return null;

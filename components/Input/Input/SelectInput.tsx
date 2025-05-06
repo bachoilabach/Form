@@ -1,8 +1,8 @@
-import { useInput } from "@/hooks/useInput";
-import React, { memo } from "react";
-import { Controller } from "react-hook-form";
-import { StyleSheet, Text } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
+import { useInput } from '@/hooks/useInput';
+import React, { memo } from 'react';
+import { Controller } from 'react-hook-form';
+import { StyleSheet, Text } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 interface SelectInputProps {
   title: string;
   control?: any;
@@ -11,16 +11,9 @@ interface SelectInputProps {
   errors?: any;
   placeholder: string;
 }
-const SelectInput = ({
-  title,
-  control,
-  name,
-  items,
-  errors,
-  placeholder,
-}: SelectInputProps) => {
-  const {openSelect,setOpenSelect} = useInput()
-  console.log("SelectInput::")
+const SelectInput = ({ title, control, name, items, errors, placeholder }: SelectInputProps) => {
+  const { openSelect, setOpenSelect } = useInput();
+  console.log('SelectInput::');
   return (
     <>
       <Text style={styles.title}>{title}</Text>
@@ -41,18 +34,13 @@ const SelectInput = ({
                 const selectedValue = callback(value);
                 onChange(selectedValue);
               }}
-              style={[
-                styles.input,
-                errors.gender && { borderColor: "red", borderWidth: 1 },
-              ]}
+              style={[styles.input, errors.gender && { borderColor: 'red', borderWidth: 1 }]}
               placeholder={placeholder}
               containerStyle={{ height: 50, marginBottom: 10 }}
-              placeholderStyle={{ color: "#aaa" }}
+              placeholderStyle={{ color: '#aaa' }}
             />
             {errors.gender && (
-              <Text style={{ color: "red", marginBottom: 10 }}>
-                {errors.gender.message}
-              </Text>
+              <Text style={{ color: 'red', marginBottom: 10 }}>{errors.gender.message}</Text>
             )}
           </>
         )}
@@ -66,14 +54,14 @@ export default memo(SelectInput);
 const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 8,
     fontSize: 16,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   title: {
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });
