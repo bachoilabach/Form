@@ -1,4 +1,4 @@
-import { Mode } from '@/components/Input/Input/DateInput';
+import { Mode } from '@/components/Input/DateInput';
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 

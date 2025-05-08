@@ -16,7 +16,7 @@ interface DateInputProps {
   name: string;
   minimumDate?: Date;
   maximumDate?: Date;
-  // mode?: any;
+  mode?: Mode;
 }
 
 const DateInput = ({
@@ -25,18 +25,16 @@ const DateInput = ({
   name,
   minimumDate,
   maximumDate,
-  // mode = 'date',
+  mode = Mode.DATE,
 }: DateInputProps) => {
   const { field } = useController({ control, name });
   const { setDatePickerVisibility, isDatePickerVisible, formatDate } = useInput();
-
-  console.log('DateInput::');
 
   return (
     <>
       <Text style={styles.title}>{title}</Text>
       <TouchableOpacity style={styles.input} onPress={() => setDatePickerVisibility(true)}>
-        <Text>{field.value ? formatDate(field.value, Mode.DATE) : 'Select date'}</Text>
+        <Text>{field.value ? formatDate(field.value, mode) : 'Select date'}</Text>
       </TouchableOpacity>
 
       <DateTimePickerModal

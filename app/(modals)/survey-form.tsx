@@ -1,6 +1,6 @@
-import CustomFormInput from '@/components/Input/Input/CustomFormInput';
-import DateInput from '@/components/Input/Input/DateInput';
-import SelectInput from '@/components/Input/Input/SelectInput';
+import CustomFormInput from '@/components/Input/CustomFormInput';
+import DateInput, { Mode } from '@/components/Input/DateInput';
+import SelectInput from '@/components/Input/SelectInput';
 import { fullNameVietNamese, number } from '@/constants/Regex';
 import { KeyboardType } from '@/enums/KeyboardType';
 import { useSurveyForm } from '@/hooks/useSurveyForm';
@@ -17,8 +17,6 @@ import {
 } from 'react-native';
 
 const SurveyForm = () => {
-  console.log('==============');
-  console.log('FORM::');
   const { control, errors, onSubmit, genderItems } = useSurveyForm();
   return (
     <KeyboardAvoidingView
@@ -28,7 +26,6 @@ const SurveyForm = () => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-          {/* {surveyFormFields.map((field) => renderField(field, control, errors))} */}
           <CustomFormInput
             control={control}
             title={'Full Name'}
@@ -65,7 +62,7 @@ const SurveyForm = () => {
             name="dateOfBirth"
             minimumDate={new Date(1950, 0, 1)}
             maximumDate={new Date()}
-            // mode={Mode.DATE}
+            mode={Mode.DATE}
           />
           <TouchableOpacity style={styles.button} onPress={onSubmit}>
             <Text style={{ color: '#fff' }}>Submit</Text>

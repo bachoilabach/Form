@@ -1,7 +1,7 @@
-import CustomFormInput from '@/components/Input/Input/CustomFormInput';
-import CustomSwitch from '@/components/Input/Input/CustomSwitch';
-import DateInput from '@/components/Input/Input/DateInput';
-import SelectInput from '@/components/Input/Input/SelectInput';
+import CustomFormInput from '@/components/Input/CustomFormInput';
+import CustomSwitch from '@/components/Input/CustomSwitch';
+import DateInput from '@/components/Input/DateInput';
+import SelectInput from '@/components/Input/SelectInput';
 
 export const renderField = (field: any, control: any, errors: any) => {
   switch (field.type) {

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 
-import { Mode } from '@/components/Input/Input/DateInput';
+import { Mode } from '@/components/Input/DateInput';
 import { emailRegex, fullNameVietNamese, number, phoneNumberVietNam } from '@/constants/Regex';
 import { Color } from '@/enums/Color';
 import { FieldType } from '@/enums/FieldType';
@@ -11,7 +11,10 @@ import { SurveyResponse } from '@/models/survey.model';
 import { submitSurveys } from '@/services/survey.services';
 import { useCallback, useEffect, useMemo } from 'react';
 import Toast from 'react-native-toast-message';
-export function useSurveyForm() {
+type useSurveyFormProps = {
+  handleShowModalSuccess?: () => void;
+};
+export function useSurveyForm({ handleShowModalSuccess }: useSurveyFormProps = {}) {
   const {
     control,
     handleSubmit,
@@ -53,6 +56,7 @@ export function useSurveyForm() {
           ...data,
         };
         await submitSurveys(surveyWithId);
+        handleShowModalSuccess?.();
         Toast.show({
           type: 'success',
           text1: 'Submit Success',

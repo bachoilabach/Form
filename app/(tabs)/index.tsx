@@ -1,8 +1,12 @@
+import ModalSuccess from '@/components/Survey/ModalSuccess';
 import SurveyItem from '@/components/Survey/SurveyItem';
 import { useSurvey } from '@/hooks/useSurvey';
+import { useSurveyForm } from '@/hooks/useSurveyForm';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import {
   ActivityIndicator,
+  Button,
   FlatList,
   Platform,
   SafeAreaView,
@@ -14,41 +18,54 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
-  console.log('-------------');
-  console.log('Updates::');
+  const [isModalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
+  const handleShowModalSuccess = () => {
+    setModalSuccessOpen(true);
+  };
+  const handleCloseModal = () => {
+    setModalSuccessOpen(false);
+  };
+  const form = useSurveyForm({ handleShowModalSuccess });
   const { loading, surveys, isRefreshing, pullToRefresh } = useSurvey();
-
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={[styles.container, Platform.OS === 'android' ? { marginTop: 36 } : '']}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => router.push('/(modals)/survey-form')}
+    <>
+      <SafeAreaProvider>
+        <SafeAreaView
+          style={[styles.container, Platform.OS === 'android' ? { marginTop: 36 } : '']}
         >
-          <Text style={{ color: 'white', fontSize: 18 }}>Open survey form</Text>
-        </TouchableOpacity>
-        {loading ? (
-          <ActivityIndicator size={'large'} />
-        ) : (
-          <FlatList
-            data={surveys}
-            refreshing={isRefreshing}
-            onRefresh={pullToRefresh}
-            renderItem={({ item }) => <SurveyItem {...item} />}
-            keyExtractor={(item) => item.id.toString()}
-            ListHeaderComponent={
-              <View>{surveys?.length === 0 && <Text>Không có survey nào</Text>}</View>
-            }
-          />
-        )}
-      </SafeAreaView>
-    </SafeAreaProvider>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => router.push('/(modals)/survey-form')}
+          >
+            <Text style={{ color: 'white', fontSize: 18 }}>Open survey form</Text>
+          </TouchableOpacity>
+          <Button title={'Open modal'} onPress={handleShowModalSuccess} />
+          {loading ? (
+            <ActivityIndicator size={'large'} />
+          ) : (
+            <FlatList
+              data={surveys}
+              refreshing={isRefreshing}
+              onRefresh={pullToRefresh}
+              renderItem={({ item }) => <SurveyItem {...item} />}
+              keyExtractor={(item) => item.id.toString()}
+              ListHeaderComponent={
+                <View>{surveys?.length === 0 && <Text>Không có survey nào</Text>}</View>
+              }
+            />
+          )}
+          {isModalSuccessOpen && (
+            <ModalSuccess isModalOpen={isModalSuccessOpen} handleCloseModal={handleCloseModal} />
+          )}
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     padding: 10,
     backgroundColor: '#fff',
     alignItems: 'center',
