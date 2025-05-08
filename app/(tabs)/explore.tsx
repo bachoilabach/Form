@@ -24,6 +24,9 @@ export default function Explore() {
     onViewableItemsChanged,
     viewabilityConfig,
   } = useVideos();
+  const renderItem = ({ item, index }: any) => (
+    <VideoCard video={item} index={index} currentVisibleIndex={currentVisibleIndex} />
+  );
 
   return (
     <View style={styles.container}>
@@ -44,9 +47,7 @@ export default function Explore() {
           <FlatList
             data={videos}
             keyExtractor={(item, index) => `${item.id}-${index}`}
-            renderItem={({ item, index }) => (
-              <VideoCard video={item} index={index} currentVisibleIndex={currentVisibleIndex} />
-            )}
+            renderItem={renderItem}
             {...FlatListVideoConfig}
             onEndReached={handleLoadMoreVideos}
             onEndReachedThreshold={END_REACHED_THRESHOLD}
