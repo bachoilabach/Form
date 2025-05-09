@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     alignContent: 'center',
-    backgroundColor: 'black',
+    backgroundColor: Colors.dark.backgroundVideos,
   },
   groupButton: {
     position: 'absolute',
