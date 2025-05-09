@@ -4,6 +4,7 @@ import { useVideoCard } from '@/hooks/useVideoCard';
 import { VideoModel } from '@/models/video.model';
 import { Image } from 'expo-image';
 import { VideoView } from 'expo-video';
+import { memo } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 type VideoCardProps = {
@@ -12,11 +13,8 @@ type VideoCardProps = {
   currentVisibleIndex: number;
 };
 
-export default function VideoCard(props: VideoCardProps) {
+export default memo(function VideoCard(props: VideoCardProps) {
   const { video, index, currentVisibleIndex } = props;
-  const shouldPlay = index === currentVisibleIndex;
-  const { thumbnail } = video.videos.tiny;
-
   const {
     handlePlayOrPause,
     videoLandScape,
@@ -26,21 +24,24 @@ export default function VideoCard(props: VideoCardProps) {
     isVideoLoaded,
     onFirstFrameRender,
     paddingBottomVideoCard,
-  } = useVideoCard(video, shouldPlay);
-
+    thumbnail,
+  } = useVideoCard(video, index, currentVisibleIndex);
   return (
     <View style={[styles.card, paddingBottomVideoCard]}>
-      <Pressable onPress={handlePlayOrPause}>
-        <VideoView
-          style={[videoLandScape]}
-          player={player}
-          allowsFullscreen
-          allowsPictureInPicture
-          nativeControls={false}
-          contentFit="contain"
-          onFirstFrameRender={onFirstFrameRender}
-        />
-      </Pressable>
+      {player && (
+        <Pressable onPress={handlePlayOrPause}>
+          <VideoView
+            style={[videoLandScape]}
+            player={player}
+            allowsFullscreen
+            allowsPictureInPicture
+            nativeControls={false}
+            contentFit="contain"
+            onFirstFrameRender={onFirstFrameRender}
+            
+          />
+        </Pressable>
+      )}
 
       {!isVideoLoaded && (
         <View style={[videoLandScape, styles.thumbnailWrapper]}>
@@ -48,6 +49,7 @@ export default function VideoCard(props: VideoCardProps) {
             source={{ uri: thumbnail }}
             style={[StyleSheet.absoluteFill, styles.thumbnail]}
             contentFit="cover"
+            priority={'low'}
           />
           <ActivityIndicator size="large" color="white" style={styles.spinner} />
         </View>
@@ -65,7 +67,7 @@ export default function VideoCard(props: VideoCardProps) {
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   card: {

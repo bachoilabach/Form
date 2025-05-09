@@ -14,10 +14,12 @@ export enum DecelerationRates {
 
 export const FlatListVideoConfig = {
   pagingEnabled: true,
-  initialNumToRender: 2,
+  initialNumToRender: 5,
   snapToInterval: height,
   decelerationRate: DecelerationRates.FAST,
   showsVerticalScrollIndicator: false,
   snapToAlignment: SnapAlignments.START,
   removeClippedSubviews: true,
+  windowSize: 5,
+  maxToRenderPerBatch: 4
 };

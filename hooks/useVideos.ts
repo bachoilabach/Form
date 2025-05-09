@@ -1,7 +1,9 @@
 import { ITEM_VISIBLE_PERCENT_THRESHOLD } from '@/constants/Video';
 import { VideoModel } from '@/models/video.model';
 import { getVideos } from '@/services/video.services';
-import { useEffect, useRef, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { debounce } from 'lodash';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Toast from 'react-native-toast-message';
 
 type LoadingState = {
@@ -21,8 +23,42 @@ export function useVideos() {
     isLoadingMore: false,
   });
 
-  const setLoadingFlags = (state: Partial<LoadingState>) =>
-    setLoadingState((prev) => ({ ...prev, ...state }));
+  const setLoadingFlags = useCallback(
+    (state: Partial<LoadingState>) => setLoadingState((prev) => ({ ...prev, ...state })),
+    [],
+  );
+
+  const cacheVideos = useCallback(async (videos: VideoModel[]) => {
+    try {
+      const maxVideos = 50;
+      const cacheData = {
+        videos: videos.slice(-maxVideos),
+        timestamp: Date.now(),
+      };
+      await AsyncStorage.setItem('cachedVideos', JSON.stringify(cacheData));
+    } catch (error) {
+      console.error('Error caching videos:', error);
+    }
+  }, []);
+
+  const getCachedVideos = useCallback(async (ttl = 5 * 60 * 1000) => {
+    try {
+      const cached = await AsyncStorage.getItem('cachedVideos');
+      if (!cached) return [];
+
+      const { videos, timestamp } = JSON.parse(cached);
+      const isExpired = Date.now() - timestamp > ttl;
+
+      if (isExpired) {
+        await AsyncStorage.removeItem('cachedVideos');
+        return [];
+      }
+      return videos;
+    } catch (error) {
+      console.error('Error retrieving cached videos:', error);
+      return [];
+    }
+  }, []);
 
   const handleGetVideos = async (requestedPage: number) => {
     const isInitial = requestedPage === 1 && !loadingState.isRefreshing;
@@ -36,8 +72,13 @@ export function useVideos() {
 
       if (requestedPage === 1) {
         setVideos(hits);
+        cacheVideos(hits);
       } else {
-        setVideos((prev) => [...prev, ...hits]);
+        setVideos((prev) => {
+          const updatedVideos = [...prev, ...hits];
+          cacheVideos(updatedVideos);
+          return updatedVideos;
+        });
       }
       setPage(requestedPage);
     } catch (error: any) {
@@ -47,18 +88,26 @@ export function useVideos() {
     }
   };
 
-  const pullToRefresh = async () => {
+  const pullToRefresh = useCallback(async () => {
     setLoadingFlags({ isRefreshing: true });
+    await AsyncStorage.removeItem('cachedVideos');
     await handleGetVideos(1);
-  };
+  }, []);
 
-  const handleLoadMoreVideos = async () => {
+  const handleLoadMoreVideos = debounce(async () => {
     if (Object.values(loadingState).some(Boolean)) return;
     await handleGetVideos(page + 1);
-  };
+  }, 1000);
 
+  const initVideos = async () => {
+    const cachedVideos = await getCachedVideos();
+    if (cachedVideos.length > 0) {
+      setVideos(cachedVideos);
+    }
+    await handleGetVideos(1);
+  };
   useEffect(() => {
-    handleGetVideos(1);
+    initVideos();
     return () => {};
   }, []);
 

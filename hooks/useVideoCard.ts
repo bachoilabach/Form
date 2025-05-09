@@ -5,14 +5,16 @@ import { useEvent } from 'expo';
 import { useVideoPlayer } from 'expo-video';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-export function useVideoCard(video: VideoModel, shouldPlay: boolean) {
+export function useVideoCard(
+  video: VideoModel,
+  index: number,
+  currentVisibleIndex: number,
+) {
   const bottomTabHeight = useBottomTabBarHeight();
   const { userImageURL } = video;
-  const { width, height, url } = video.videos.tiny;
-  const videoSource = {
-    uri: url,
-    useCaching: true,
-  };
+  const { width, height, url, thumbnail } = video.videos.tiny;
+
+  const shouldPlay = useMemo(() => index === currentVisibleIndex, [index, currentVisibleIndex]);
   const paddingBottomVideoCard = {
     paddingBottom: bottomTabHeight,
   };
@@ -38,13 +40,13 @@ export function useVideoCard(video: VideoModel, shouldPlay: boolean) {
 
   const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
 
-  const handlePlayVideo = () => {
+  const handlePlayVideo = useCallback(() => {
     if (shouldPlay) {
       player.play();
     } else {
       player.pause();
     }
-  };
+  }, [shouldPlay]);
 
   const handlePlayOrPause = useCallback(() => {
     if (player.playing) {
@@ -72,5 +74,6 @@ export function useVideoCard(video: VideoModel, shouldPlay: boolean) {
     isVideoLoaded,
     onFirstFrameRender,
     paddingBottomVideoCard,
+    thumbnail,
   };
 }

@@ -31,20 +31,20 @@ export default function Explore() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.groupButton}>
+        <TouchableOpacity onPress={pullToRefresh}>
+          <Text style={styles.textButton}>For you</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={pullToRefresh}>
+          <Text style={styles.textButton}>Explore</Text>
+        </TouchableOpacity>
+      </View>
       {isLoading ? (
         <SafeAreaView>
           <ActivityIndicator size={'large'} color={'#fff'} />
         </SafeAreaView>
       ) : (
         <View style={styles.container}>
-          <View style={styles.groupButton}>
-            <TouchableOpacity onPress={pullToRefresh}>
-              <Text style={styles.textButton}>For you</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={pullToRefresh}>
-              <Text style={styles.textButton}>Explore</Text>
-            </TouchableOpacity>
-          </View>
           <FlatList
             data={videos}
             keyExtractor={(item, index) => `${item.id}-${index}`}
@@ -59,6 +59,7 @@ export default function Explore() {
             ListFooterComponent={
               isLoadingMore ? <ActivityIndicator size={'large'} color={'#fff'} /> : null
             }
+            contentContainerStyle={{paddingBottom: 100}}
           />
         </View>
       )}
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     alignContent: 'center',
+    backgroundColor: 'black',
   },
   groupButton: {
     position: 'absolute',
