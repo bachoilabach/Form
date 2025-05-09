@@ -1,4 +1,4 @@
-import { ITEM_VISIBLE_PERCENT_THRESHOLD } from '@/constants/Video';
+import { initPage, ITEM_VISIBLE_PERCENT_THRESHOLD } from '@/constants/Video';
 import { VideoModel } from '@/models/video.model';
 import { getVideos } from '@/services/video.services';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,7 +14,7 @@ type LoadingState = {
 
 export function useVideos() {
   const [videos, setVideos] = useState<VideoModel[]>([]);
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(initPage);
   const [currentVisibleIndex, setCurrentVisibleIndex] = useState<number>(0);
 
   const [loadingState, setLoadingState] = useState<LoadingState>({
@@ -61,7 +61,7 @@ export function useVideos() {
   }, []);
 
   const handleGetVideos = async (requestedPage: number) => {
-    const isInitial = requestedPage === 1 && !loadingState.isRefreshing;
+    const isInitial = requestedPage === initPage && !loadingState.isRefreshing;
 
     try {
       if (isInitial) setLoadingFlags({ isLoading: true });
@@ -70,7 +70,7 @@ export function useVideos() {
       const res = await getVideos(requestedPage);
       const { hits } = res;
 
-      if (requestedPage === 1) {
+      if (requestedPage === initPage) {
         setVideos(hits);
         cacheVideos(hits);
       } else {
@@ -96,7 +96,8 @@ export function useVideos() {
 
   const handleLoadMoreVideos = debounce(async () => {
     if (Object.values(loadingState).some(Boolean)) return;
-    await handleGetVideos(page + 1);
+    const nextPage = page + 1
+    await handleGetVideos(nextPage);
   }, 1000);
 
   const initVideos = async () => {

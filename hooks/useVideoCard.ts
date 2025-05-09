@@ -5,11 +5,7 @@ import { useEvent } from 'expo';
 import { useVideoPlayer } from 'expo-video';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-export function useVideoCard(
-  video: VideoModel,
-  index: number,
-  currentVisibleIndex: number,
-) {
+export function useVideoCard(video: VideoModel, index: number, currentVisibleIndex: number) {
   const bottomTabHeight = useBottomTabBarHeight();
   const { userImageURL } = video;
   const { width, height, url, thumbnail } = video.videos.tiny;

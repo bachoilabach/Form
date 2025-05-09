@@ -1,4 +1,5 @@
 import { PlayIcon } from '@/assets/icons/SvgIcon';
+import { Colors } from '@/constants/Colors';
 import { VIDEO_HEIGHT, VIDEO_WIDTH } from '@/constants/Video';
 import { useVideoCard } from '@/hooks/useVideoCard';
 import { VideoModel } from '@/models/video.model';
@@ -13,8 +14,8 @@ type VideoCardProps = {
   currentVisibleIndex: number;
 };
 
-export default memo(function VideoCard(props: VideoCardProps) {
-  const { video, index, currentVisibleIndex } = props;
+export default memo(function VideoCard(videoProps: VideoCardProps) {
+  const { video, index, currentVisibleIndex } = videoProps;
   const {
     handlePlayOrPause,
     videoLandScape,
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     width: VIDEO_WIDTH,
     height: VIDEO_HEIGHT,
     paddingTop: 48,
-    backgroundColor: 'black',
+    backgroundColor: Colors.dark.backgroundVideos,
   },
   playPause: {
     position: 'absolute',
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   title: {
-    color: 'white',
+    color: Colors.light.background,
     fontSize: 16,
     fontWeight: 'bold',
   },
