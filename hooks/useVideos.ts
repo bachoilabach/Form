@@ -41,7 +41,8 @@ export function useVideos() {
     }
   }, []);
 
-  const getCachedVideos = useCallback(async (ttl = 5 * 60 * 1000) => {
+  const getCachedVideos = useCallback(async () => {
+    const ttl = 5 * 60 * 1000
     try {
       const cached = await AsyncStorage.getItem('cachedVideos');
       if (!cached) return [];
@@ -91,7 +92,7 @@ export function useVideos() {
   const pullToRefresh = useCallback(async () => {
     setLoadingFlags({ isRefreshing: true });
     await AsyncStorage.removeItem('cachedVideos');
-    await handleGetVideos(1);
+    await handleGetVideos(initPage);
   }, []);
 
   const handleLoadMoreVideos = debounce(async () => {
@@ -105,7 +106,7 @@ export function useVideos() {
     if (cachedVideos.length > 0) {
       setVideos(cachedVideos);
     }
-    await handleGetVideos(1);
+    await handleGetVideos(initPage);
   };
   useEffect(() => {
     initVideos();
