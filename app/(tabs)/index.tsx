@@ -1,5 +1,6 @@
 import ModalSuccess from '@/components/Survey/ModalSuccess';
 import SurveyItem from '@/components/Survey/SurveyItem';
+import { Colors } from '@/constants/Colors';
 import { useSurvey } from '@/hooks/useSurvey';
 import { router } from 'expo-router';
 import {
@@ -53,12 +54,12 @@ const styles = StyleSheet.create({
   container: {
     // flex: 1,
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.light.background,
     alignItems: 'center',
     zIndex: 0,
   },
   button: {
-    backgroundColor: '#33CCFF',
+    backgroundColor: Colors.light.button,
     padding: 10,
     borderRadius: 8,
     marginBottom: 10,

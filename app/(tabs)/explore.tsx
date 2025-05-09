@@ -1,4 +1,5 @@
 import VideoCard from '@/components/Video/VideoCard';
+import { Colors } from '@/constants/Colors';
 import { END_REACHED_THRESHOLD } from '@/constants/Video';
 import { FlatListVideoConfig } from '@/enums/Videos';
 import { useVideos } from '@/hooks/useVideos';
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textButton: {
-    color: '#EEEEEE',
+    color: Colors.light.textButton,
     fontSize: 24,
   },
 });
