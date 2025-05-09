@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 
-import { Mode } from '@/components/Input/Input/DateInput';
+import { Mode } from '@/components/Input/DateInput';
 import { emailRegex, fullNameVietNamese, number, phoneNumberVietNam } from '@/constants/Regex';
 import { Color } from '@/enums/Color';
 import { FieldType } from '@/enums/FieldType';
@@ -9,8 +9,11 @@ import { Gender } from '@/enums/Gender';
 import { KeyboardType } from '@/enums/KeyboardType';
 import { SurveyResponse } from '@/models/survey.model';
 import { submitSurveys } from '@/services/survey.services';
+import { useSurveySelector } from '@/stores/surveySelector/surveySelector';
 import { useCallback, useEffect, useMemo } from 'react';
+import { Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
+
 export function useSurveyForm() {
   const {
     control,
@@ -33,7 +36,7 @@ export function useSurveyForm() {
     },
   });
   const navigation = useNavigation();
-
+  const { openSuccessModal } = useSurveySelector();
   function convertToArray(object: object) {
     const items = Object.entries(object).map(([key, value]) => ({
       label: key.charAt(0).toUpperCase() + key.slice(1),
@@ -57,6 +60,11 @@ export function useSurveyForm() {
           type: 'success',
           text1: 'Submit Success',
         });
+        if (Platform.OS === 'ios') {
+          setTimeout(() => openSuccessModal(surveyWithId), 200);
+        } else {
+          openSuccessModal(surveyWithId);
+        }
         handelResetForm();
         navigation.goBack();
       } catch (error: any) {

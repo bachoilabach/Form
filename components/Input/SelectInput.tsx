@@ -13,7 +13,6 @@ interface SelectInputProps {
 }
 const SelectInput = ({ title, control, name, items, errors, placeholder }: SelectInputProps) => {
   const { openSelect, setOpenSelect } = useInput();
-  console.log('SelectInput::');
   return (
     <>
       <Text style={styles.title}>{title}</Text>

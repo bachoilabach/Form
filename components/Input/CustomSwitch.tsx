@@ -7,7 +7,6 @@ interface SwitchProps {
   name: string;
 }
 const CustomeSwitch = ({ title, control, name }: SwitchProps) => {
-  console.log('CustomeSwitch::');
   return (
     <View key={name}>
       <Text style={{ fontWeight: '600', marginBottom: 8 }}>{title}</Text>

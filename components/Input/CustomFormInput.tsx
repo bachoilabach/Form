@@ -61,7 +61,6 @@ const CustomFormInput = ({
       }),
     },
   });
-  console.log('CUSTOM INPUT::');
   return (
     <>
       <Text style={styles.title}>{title}</Text>
