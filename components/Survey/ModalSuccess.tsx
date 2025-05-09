@@ -1,43 +1,48 @@
+import { SuccessIcon } from '@/assets/icons/SvgIcon';
+import { Gender } from '@/enums/Gender';
+import { useSurveySelector } from '@/stores/surveySelector/surveySelector';
 import React from 'react';
 import {
   Modal,
-  Pressable,
-  SafeAreaView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-type ModalSuccessProps = {
-  isModalOpen: boolean;
-  handleCloseModal: () => void;
-};
-const ModalSuccess = (props: ModalSuccessProps) => {
-  console.log('Success Modal');
-  const { isModalOpen, handleCloseModal } = props;
+const ModalSuccess = () => {
+  const { isSuccessModalOpen, closeSuccessModal, submittedSurvey } = useSurveySelector();
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={isModalOpen}
-          onRequestClose={handleCloseModal}
-        >
-          <TouchableWithoutFeedback onPress={handleCloseModal}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Hello World!</Text>
-                <Pressable style={[styles.button, styles.buttonClose]} onPress={handleCloseModal}>
-                  <Text style={styles.textStyle}>Hide Modal</Text>
-                </Pressable>
-              </View>
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={isSuccessModalOpen}
+      onRequestClose={closeSuccessModal}
+    >
+      <TouchableWithoutFeedback onPress={closeSuccessModal}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity onPress={closeSuccessModal} style={styles.closeButton}>
+              <Text style={styles.buttonText}>X</Text>
+            </TouchableOpacity>
+            <SuccessIcon />
+            <Text style={styles.title}>Success</Text>
+            <Text style={styles.contentText}>Successfully submit the survey</Text>
+            <View style={styles.submit}>
+              <Text style={[styles.sectionInSubmit, styles.titleSubmit]}>Detail:</Text>
+              <Text style={styles.sectionInSubmit}>Name: {submittedSurvey?.fullName}</Text>
+              <Text style={styles.sectionInSubmit}>Age: {submittedSurvey?.age}</Text>
+              <Text style={styles.sectionInSubmit}>
+                Gender: {submittedSurvey?.gender === Gender.MALE ? 'Nam' : 'Nữ'}
+              </Text>
             </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-      </SafeAreaView>
-    </SafeAreaProvider>
+            <TouchableOpacity style={styles.confirmButton} onPress={closeSuccessModal}>
+              <Text style={styles.confirmText}>Confirm</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </Modal>
   );
 };
 
@@ -61,26 +66,50 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    position: 'relative',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
+  title: {
+    fontSize: 20,
+    color: '#00ee02',
+    fontWeight: 600,
+    marginBottom: 8,
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  contentText: {
+    fontWeight: 500,
+    fontSize: 18,
+    color: '#898989',
   },
-  buttonClose: {
-    backgroundColor: '#2196F3',
+  closeButton: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    padding: 12,
   },
-  textStyle: {
+  buttonText: {
+    fontSize: 24,
+    fontWeight: 600,
+  },
+  confirmButton: {
+    backgroundColor: '#3399ff',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginTop: 20,
+    borderRadius: 12,
+  },
+  confirmText: {
+    fontWeight: 600,
     color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontSize: 20,
   },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
+  submit: {
+    alignSelf: 'stretch',
+    marginVertical: 4,
+  },
+  titleSubmit: {
+    fontWeight: 500,
+  },
+  sectionInSubmit: {
+    fontSize: 16,
   },
 });
 

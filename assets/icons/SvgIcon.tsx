@@ -1,4 +1,4 @@
-import Svg, { Path } from 'react-native-svg';
+import Svg, { G, Path } from 'react-native-svg';
 
 export function HeartIcon() {
   return (
@@ -57,6 +57,21 @@ export function PauseIcon() {
         d="M8 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm7 0a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"
         clip-rule="evenodd"
       />
+    </Svg>
+  );
+}
+
+export function SuccessIcon() {
+  return (
+    <Svg width="72" height="72" viewBox="0 0 24 24">
+      <G fill="#00ee02">
+        <Path d="M10.243 16.314L6 12.07l1.414-1.414l2.829 2.828l5.656-5.657l1.415 1.415z" />
+        <Path
+          fillRule="evenodd"
+          d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11s-4.925 11-11 11S1 18.075 1 12m11 9a9 9 0 1 1 0-18a9 9 0 0 1 0 18"
+          clipRule="evenodd"
+        />
+      </G>
     </Svg>
   );
 }

@@ -9,12 +9,12 @@ import { Gender } from '@/enums/Gender';
 import { KeyboardType } from '@/enums/KeyboardType';
 import { SurveyResponse } from '@/models/survey.model';
 import { submitSurveys } from '@/services/survey.services';
+import { useSurveySelector } from '@/stores/surveySelector/surveySelector';
 import { useCallback, useEffect, useMemo } from 'react';
+import { Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
-type useSurveyFormProps = {
-  handleShowModalSuccess?: () => void;
-};
-export function useSurveyForm({ handleShowModalSuccess }: useSurveyFormProps = {}) {
+
+export function useSurveyForm() {
   const {
     control,
     handleSubmit,
@@ -36,7 +36,7 @@ export function useSurveyForm({ handleShowModalSuccess }: useSurveyFormProps = {
     },
   });
   const navigation = useNavigation();
-
+  const { openSuccessModal } = useSurveySelector();
   function convertToArray(object: object) {
     const items = Object.entries(object).map(([key, value]) => ({
       label: key.charAt(0).toUpperCase() + key.slice(1),
@@ -56,11 +56,15 @@ export function useSurveyForm({ handleShowModalSuccess }: useSurveyFormProps = {
           ...data,
         };
         await submitSurveys(surveyWithId);
-        handleShowModalSuccess?.();
         Toast.show({
           type: 'success',
           text1: 'Submit Success',
         });
+        if (Platform.OS === 'ios') {
+          setTimeout(() => openSuccessModal(surveyWithId), 200);
+        } else {
+          openSuccessModal(surveyWithId);
+        }
         handelResetForm();
         navigation.goBack();
       } catch (error: any) {
