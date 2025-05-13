@@ -1,4 +1,3 @@
-import ModalSuccess from '@/components/Survey/ModalSuccess';
 import SurveyItem from '@/components/Survey/SurveyItem';
 import { Colors } from '@/constants/Colors';
 import { useSurvey } from '@/hooks/useSurvey';
@@ -11,18 +10,18 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
   const { loading, surveys, isRefreshing, pullToRefresh } = useSurvey();
+  const padding = Platform.OS === 'android' ? { marginTop: 36 } : ''
   return (
     <>
-      <ModalSuccess />
       <SafeAreaProvider>
         <SafeAreaView
-          style={[styles.container, Platform.OS === 'android' ? { marginTop: 36 } : '']}
+          style={[styles.container, padding]}
         >
           <TouchableOpacity
             style={styles.button}
@@ -52,7 +51,6 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     padding: 10,
     backgroundColor: Colors.light.background,
     alignItems: 'center',

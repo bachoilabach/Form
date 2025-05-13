@@ -2,17 +2,11 @@ import { PlayIcon } from '@/assets/icons/SvgIcon';
 import { Colors } from '@/constants/Colors';
 import { VIDEO_HEIGHT, VIDEO_WIDTH } from '@/constants/Video';
 import { useVideoCard } from '@/hooks/useVideoCard';
-import { VideoModel } from '@/models/video.model';
+import { VideoCardProps } from '@/models/video.model';
 import { Image } from 'expo-image';
 import { VideoView } from 'expo-video';
 import { memo } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
-
-type VideoCardProps = {
-  video: VideoModel;
-  index: number;
-  currentVisibleIndex: number;
-};
 
 export default memo(function VideoCard(videoProps: VideoCardProps) {
   const { video, index, currentVisibleIndex } = videoProps;
@@ -39,7 +33,6 @@ export default memo(function VideoCard(videoProps: VideoCardProps) {
             nativeControls={false}
             contentFit="contain"
             onFirstFrameRender={onFirstFrameRender}
-            
           />
         </Pressable>
       )}

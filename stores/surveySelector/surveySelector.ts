@@ -9,6 +9,6 @@ export function useSurveySelector() {
     isSuccessModalOpen,
     openSuccessModal,
     closeSuccessModal,
-    submittedSurvey
+    submittedSurvey,
   };
 }

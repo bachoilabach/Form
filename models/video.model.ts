@@ -40,3 +40,9 @@ export type VideoParams = {
   per_page: number;
   page: number;
 };
+
+export type VideoCardProps = {
+  video: VideoModel;
+  index: number;
+  currentVisibleIndex: number;
+};
