@@ -59,7 +59,7 @@ export default function Explore() {
             ListFooterComponent={
               isLoadingMore ? <ActivityIndicator size={'large'} color={'#fff'} /> : null
             }
-            contentContainerStyle={{paddingBottom: 100}}
+            contentContainerStyle={{ paddingBottom: 100 }}
           />
         </View>
       )}

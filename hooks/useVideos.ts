@@ -6,7 +6,7 @@ import { debounce } from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Toast from 'react-native-toast-message';
 
-type LoadingState = {
+export type LoadingState = {
   isLoading: boolean;
   isRefreshing: boolean;
   isLoadingMore: boolean;
@@ -42,7 +42,7 @@ export function useVideos() {
   }, []);
 
   const getCachedVideos = useCallback(async () => {
-    const ttl = 5 * 60 * 1000
+    const ttl = 5 * 60 * 1000;
     try {
       const cached = await AsyncStorage.getItem('cachedVideos');
       if (!cached) return [];
@@ -97,7 +97,7 @@ export function useVideos() {
 
   const handleLoadMoreVideos = debounce(async () => {
     if (Object.values(loadingState).some(Boolean)) return;
-    const nextPage = page + 1
+    const nextPage = page + 1;
     await handleGetVideos(nextPage);
   }, 1000);
 

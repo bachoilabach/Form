@@ -1,6 +1,7 @@
 import { SuccessIcon } from '@/assets/icons/SvgIcon';
 import { Gender } from '@/enums/Gender';
 import { useSurveySelector } from '@/stores/surveySelector/surveySelector';
+import { useNavigation } from 'expo-router';
 import React from 'react';
 import {
   Modal,
@@ -12,17 +13,23 @@ import {
 } from 'react-native';
 const ModalSuccess = () => {
   const { isSuccessModalOpen, closeSuccessModal, submittedSurvey } = useSurveySelector();
+  const navigation = useNavigation();
+  const handleCloseModal = () => {
+    closeSuccessModal();
+    navigation.goBack();
+  };
+
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={isSuccessModalOpen}
-      onRequestClose={closeSuccessModal}
+      onRequestClose={handleCloseModal}
     >
-      <TouchableWithoutFeedback onPress={closeSuccessModal}>
+      <TouchableWithoutFeedback onPress={handleCloseModal}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <TouchableOpacity onPress={closeSuccessModal} style={styles.closeButton}>
+            <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
               <Text style={styles.buttonText}>X</Text>
             </TouchableOpacity>
             <SuccessIcon />
@@ -36,7 +43,13 @@ const ModalSuccess = () => {
                 Gender: {submittedSurvey?.gender === Gender.MALE ? 'Nam' : 'Nữ'}
               </Text>
             </View>
-            <TouchableOpacity style={styles.confirmButton} onPress={closeSuccessModal}>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => {
+                closeSuccessModal();
+                navigation.goBack();
+              }}
+            >
               <Text style={styles.confirmText}>Confirm</Text>
             </TouchableOpacity>
           </View>
