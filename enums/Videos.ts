@@ -21,5 +21,5 @@ export const FlatListVideoConfig = {
   snapToAlignment: SnapAlignments.START,
   removeClippedSubviews: true,
   windowSize: 5,
-  maxToRenderPerBatch: 4
+  maxToRenderPerBatch: 4,
 };

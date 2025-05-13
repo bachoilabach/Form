@@ -16,7 +16,7 @@ export const Colors = {
     tabIconSelected: tintColorLight,
     activityIndicatorColor: '#fff',
     textButton: '#EEEEEE',
-    button: '#33CCFF'
+    button: '#33CCFF',
   },
   dark: {
     text: '#ECEDEE',
@@ -25,8 +25,8 @@ export const Colors = {
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
-    backgroundVideos: 'black'
+    backgroundVideos: 'black',
   },
 };
 
-export const  activityIndicatorColor = '#fff'
+export const activityIndicatorColor = '#fff';
