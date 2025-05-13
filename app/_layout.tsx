@@ -33,8 +33,22 @@ export default function RootLayout() {
               headerRight: () => <Button title="Close" onPress={() => router.back()} />,
             }}
           />
+          <Stack.Screen
+            name="(modals)/video-snippet"
+            options={{
+              presentation: 'modal',
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(videos)/video-detail"
+            options={{
+              title: 'Video Detail',
+              headerLeft: () => <Button title="Back" onPress={() => router.back()} />,
+            }}
+          />
         </Stack>
-        <StatusBar style="light" />
+        <StatusBar style="auto" />
       </ThemeProvider>
       <Toast />
     </>
