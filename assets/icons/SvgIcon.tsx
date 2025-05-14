@@ -106,3 +106,29 @@ export function CameraIcon({ color }: { color: string }) {
     </Svg>
   );
 }
+
+export function ForwardIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24">
+      <Path
+        fill="none"
+        stroke="#fff"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="M3 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811zm9.75 0c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061a1.125 1.125 0 0 1-1.683-.977z"
+      ></Path>
+    </Svg>
+  );
+}
+
+export function BackwardIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 512 512">
+      <Path
+        fill="#fff"
+        d="M455.979 424.271A24.053 24.053 0 0 0 480 400.251V112.015a24 24 0 0 0-38.285-19.286L264 224.369V112.015a24 24 0 0 0-38.285-19.286L31.155 236.847a24 24 0 0 0 0 38.57l194.56 144.119A24 24 0 0 0 264 400.251V287.9l177.715 131.637a23.92 23.92 0 0 0 14.264 4.734M232 384.37L58.88 256.132L232 127.9ZM448 127.9v256.47L274.88 256.132Z"
+      ></Path>
+    </Svg>
+  );
+}

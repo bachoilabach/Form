@@ -17,4 +17,4 @@ export const YouTubeVideoListConfig = {
   maxToRenderPerBatch: 10,
 };
 
-export const NUMBER_OF_LINES = 2
+export const NUMBER_OF_LINES = 2;
