@@ -4,7 +4,7 @@ import Toast from 'react-native-toast-message';
 
 export const fetchSurvey = async (): Promise<SurveyResponse[]> => {
   try {
-    const res = await axios.get<any, SurveyResponse[]>('http://10.10.113.30:3001/surveys');
+    const res = await axios.get<any, SurveyResponse[]>('http://10.10.113.31:3001/surveys');
     const { data } = res;
     return data;
   } catch (error: any) {
@@ -19,7 +19,7 @@ export const submitSurveys = async (
   survey: SurveyResponse,
 ): Promise<SurveyResponse | undefined> => {
   try {
-    const res = await axios.post<SurveyResponse>('http://10.10.113.30:3001/surveys', survey);
+    const res = await axios.post<SurveyResponse>('http://10.10.113.31:3001/surveys', survey);
     const { data } = res;
     return data;
   } catch (error: any) {

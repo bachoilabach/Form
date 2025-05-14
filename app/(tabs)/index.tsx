@@ -16,13 +16,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
   const { loading, surveys, isRefreshing, pullToRefresh } = useSurvey();
-  const padding = Platform.OS === 'android' ? { marginTop: 36 } : ''
+  const padding = Platform.OS === 'android' ? { marginTop: 36 } : '';
   return (
     <>
       <SafeAreaProvider>
-        <SafeAreaView
-          style={[styles.container, padding]}
-        >
+        <SafeAreaView style={[styles.container, padding]}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => router.push('/(modals)/survey-form')}

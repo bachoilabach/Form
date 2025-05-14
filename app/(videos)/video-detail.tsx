@@ -1,36 +1,35 @@
 import YouTubeVideoList from '@/components/Video/YouTubeVideoList';
 import { NUMBER_OF_LINES, YOUTUBE_VIDEO_HEIGHT } from '@/constants/YouTubeVideo';
 import { useYouTubeVideoDetail } from '@/hooks/useYouTubeVideoDetail';
-import { youtubeUrl } from '@/utils/youTubeUltill';
 import { useRoute } from '@react-navigation/native';
-import React from 'react';
+import React, { memo } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
-  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import VideoSnippet from '../(modals)/video-snippet';
 
 const VIDEO_WIDTH = Dimensions.get('window').width;
 
-export default function VideoDetail() {
+export default memo(function YouTubeVideoDetail() {
   const { params } = useRoute();
   const { videoId, title } = params as { videoId: string; title: string };
-  const { handleCloseVideoSnippet, hanldeOpenVideoSnippet, isVideoSnippetVisible, videoDetail } =
-    useYouTubeVideoDetail(videoId);
+  const {
+    handleCloseVideoSnippet,
+    hanldeOpenVideoSnippet,
+    isVideoSnippetVisible,
+    videoDetail,
+    snippet,
+    openYoutubeVideo,
+    channelId
+  } = useYouTubeVideoDetail(videoId);
 
   if (!videoDetail) return <ActivityIndicator />;
-
-  const { snippet } = videoDetail;
-  const { channelId } = snippet;
-  const openYoutubeVideo = async (videoId: string) => {
-    Linking.openURL(youtubeUrl(videoId)).catch((err) => console.error('Failed to open URL:', err));
-  };
 
   const ListHeaderComponent = () => {
     return (
@@ -66,7 +65,7 @@ export default function VideoDetail() {
       )}
     </>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

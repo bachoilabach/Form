@@ -47,6 +47,14 @@ export default function RootLayout() {
               headerLeft: () => <Button title="Back" onPress={() => router.back()} />,
             }}
           />
+          <Stack.Screen
+            name="(videos)/extend-video-detail"
+            options={{
+              title: '',
+              headerShown: false,
+              headerLeft: () => <Button title="Back" onPress={() => router.back()} />,
+            }}
+          />
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>

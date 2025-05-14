@@ -15,15 +15,15 @@ import {
 
 export default function Explore() {
   const {
-    videos,
+    videoList,
     isLoading,
-    handleLoadMoreVideos,
     isRefreshing,
     pullToRefresh,
     isLoadingMore,
     currentVisibleIndex,
     onViewableItemsChanged,
     viewabilityConfig,
+    handleLoadMoreVideos
   } = useVideos();
   const renderItem = ({ item, index }: any) => (
     <VideoCard video={item} index={index} currentVisibleIndex={currentVisibleIndex} />
@@ -46,7 +46,7 @@ export default function Explore() {
       ) : (
         <View style={styles.container}>
           <FlatList
-            data={videos}
+            data={videoList}
             keyExtractor={(item, index) => `${item.id}-${index}`}
             renderItem={renderItem}
             {...FlatListVideoConfig}

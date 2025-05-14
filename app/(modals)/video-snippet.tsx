@@ -15,8 +15,7 @@ import {
   Text,
   View,
 } from 'react-native';
-
-type VideoSnippetModal = {
+export type VideoSnippetModal = {
   onClose: () => void;
   snippet: VideoSnippetModel;
 };

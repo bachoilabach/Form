@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
 
-import { YouTubeIcon } from '@/assets/icons/SvgIcon';
+import { CameraIcon, YouTubeIcon } from '@/assets/icons/SvgIcon';
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
@@ -47,6 +47,13 @@ export default function TabLayout() {
         options={{
           title: 'YouTube',
           tabBarIcon: () => <YouTubeIcon />,
+        }}
+      />
+      <Tabs.Screen
+        name="extend"
+        options={{
+          title: 'Extend',
+          tabBarIcon: ({ color }) => <CameraIcon color={color} />,
         }}
       />
     </Tabs>
