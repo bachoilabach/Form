@@ -1,0 +1,114 @@
+{
+  "videos": [
+    {
+      "id": 1,
+      "title": "Dragon Ball Super Movie 1 - Broly",
+      "duration": "1h 40m",
+      "author": "Toei Animation",
+      "releaseYear": 2018,
+      "description": "Goku và Vegeta đối mặt với Broly, một chiến binh Saiyan mạnh mẽ chưa từng thấy.",
+      "thumbnail": "https://dragonballwiki.net/xemphim/wp-content/uploads/2018/11/mysterious_saiyan_vs_goku_and_vegeta_by_maniaxoi-dc6vavg.jpg",
+      "subtitleFormat": "srt",
+      "url": "https://dn720702.ca.archive.org/0/items/tomandjerry_1080p/S1940E16%20-%20Puttin%27%20On%20The%20Dog%20%281080p%20BluRay%20x265%20Ghost%29.mp4"
+    },
+    {
+      "id": 2,
+      "title": "Dragon Ball Z Movie 08 - Broly The Legendary Super Saiyan",
+      "duration": "1h 12m",
+      "author": "Toei Animation",
+      "releaseYear": 1993,
+      "description": "Broly, một truyền thuyết Saiyan, xuất hiện và đe dọa toàn vũ trụ.",
+      "thumbnail": "https://i1.sndcdn.com/artworks-yJtNSfpaCPxyRLd4-jxNd2A-t500x500.jpg",
+      "subtitleFormat": "srt",
+      "url": "https://dn720404.ca.archive.org/0/items/DBZ-original-version/Movies/Funimation%20Dub/Dragon%20Ball%20Z%20Movie%2008%20-%20Broly%20The%20Legendary%20Super%20Saiyan.mp4"
+    },
+    {
+      "id": 3,
+      "title": "Dragon Ball Z Movie 15 - Resurrection Of Frieza (Future Trunks Special Edition)",
+      "duration": "1h 33m",
+      "author": "Toei Animation",
+      "releaseYear": 2015,
+      "description": "Frieza hồi sinh và trở lại trả thù Goku và những người bạn.",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/en/6/6a/DBZ_THE_MOVIE_NO._15.png",
+      "subtitleFormat": "srt",
+      "url": "https://dn720404.ca.archive.org/0/items/DBZ-original-version/Movies/Funimation%20Dub/Dragon%20Ball%20Z%20Movie%2015%20-%20Resurrection%20Of%20Frieza%20%28Future%20Trunks%20Special%20Edition%29.mp4"
+    },
+    {
+      "id": 4,
+      "title": "Dragon Ball Z Movie 15 - Resurrection Of Frieza",
+      "duration": "1h 50m",
+      "author": "Toei Animation",
+      "releaseYear": 2015,
+      "description": "Frieza trở lại mạnh mẽ hơn bao giờ hết sau khi tập luyện trong địa ngục.",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/en/6/6a/DBZ_THE_MOVIE_NO._15.png",
+      "subtitleFormat": "srt",
+      "url": "https://dn720404.ca.archive.org/0/items/DBZ-original-version/Movies/Funimation%20Dub/Dragon%20Ball%20Z%20Movie%2015%20-%20Resurrection%20Of%20Frieza.mp4"
+    },
+    {
+      "id": 5,
+      "title": "Dragon Ball Z Movie 03 - The Tree Of Might (3-Part Ocean Dub)",
+      "duration": "1h 1m",
+      "author": "Toei Animation",
+      "releaseYear": 1990,
+      "description": "Một cây cổ thụ hủy diệt được gieo xuống Trái Đất, đe dọa sự sống.",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/en/thumb/8/86/DBZ_THE_MOVIE_NO._3.jpg/250px-DBZ_THE_MOVIE_NO._3.jpg",
+      "subtitleFormat": "srt",
+      "url": "https://dn720404.ca.archive.org/0/items/DBZ-original-version/Movies/Ocean%20Dub/Dragon%20Ball%20Z%20Movie%2003%20-%20The%20Tree%20Of%20Might%20%283-Part%20Ocean%20Dub%29.mp4"
+    },
+    {
+      "id": 6,
+      "title": "Dragon Ball Z Movie 01 - The Dead Zone",
+      "duration": "41m",
+      "author": "Toei Animation",
+      "releaseYear": 1989,
+      "description": "Garlic Jr. tìm cách bất tử và mở ra Cõi Chết.",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/en/a/a1/DBZmovie1_Japan.gif",
+      "subtitleFormat": "srt",
+      "url": "https://dn720404.ca.archive.org/0/items/DBZ-original-version/Movies/Funimation%20Dub/Dragon%20Ball%20Z%20Movie%2001%20-%20The%20Dead%20Zone.mp4"
+    },
+    {
+      "id": 7,
+      "title": "Dragon Ball Z Movie 02 - The World's Strongest",
+      "duration": "1h 1m",
+      "author": "Toei Animation",
+      "releaseYear": 1990,
+      "description": "Tiến sĩ Kochin hồi sinh tiến sĩ Wheelo và tìm cách chiếm lấy cơ thể Goku.",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/en/2/2b/Johndoe456789.jpg",
+      "subtitleFormat": "srt",
+      "url": "https://dn720404.ca.archive.org/0/items/DBZ-original-version/Movies/Funimation%20Dub/Dragon%20Ball%20Z%20Movie%2002%20-%20The%20World%27s%20Strongest.mp4"
+    },
+    {
+      "id": 8,
+      "title": "Dragon Ball Z Movie 03 - The Tree Of Might",
+      "duration": "1h 1m",
+      "author": "Toei Animation",
+      "releaseYear": 1990,
+      "description": "Turles gieo cây Sức Mạnh trên Trái Đất nhằm hút cạn sinh lực hành tinh.",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/en/8/86/DBZ_THE_MOVIE_NO._3.jpg",
+      "subtitleFormat": "srt",
+      "url": "https://dn720404.ca.archive.org/0/items/DBZ-original-version/Movies/Funimation%20Dub/Dragon%20Ball%20Z%20Movie%2003%20-%20The%20Tree%20Of%20Might.mp4"
+    },
+    {
+      "id": 9,
+      "title": "Dragon Ball Z Movie 04 - Lord Slug",
+      "duration": "1h 2m",
+      "author": "Toei Animation",
+      "releaseYear": 1991,
+      "description": "Một Namekian độc ác tên Slug đến Trái Đất với tham vọng chiếm lấy hành tinh.",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/en/5/55/DBZmovie4_Japan.gif",
+      "subtitleFormat": "srt",
+      "url": "https://dn720404.ca.archive.org/0/items/DBZ-original-version/Movies/Funimation%20Dub/Dragon%20Ball%20Z%20Movie%2004%20-%20Lord%20Slug.mp4"
+    },
+    {
+      "id": 10,
+      "title": "Dragon Ball Z Movie 05 - Cooler's Revenge",
+      "duration": "48m",
+      "author": "Toei Animation",
+      "releaseYear": 1991,
+      "description": "Cooler, anh trai của Frieza, đến Trái Đất để trả thù cho em trai.",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/en/3/3b/Cooler%27s_Revenge_Dragon_Ball_Z.jpg",
+      "subtitleFormat": "srt",
+      "url": "https://dn720404.ca.archive.org/0/items/DBZ-original-version/Movies/Funimation%20Dub/Dragon%20Ball%20Z%20Movie%2005%20-%20Cooler%27s%20Revenge.mp4"
+    }
+  ]
+}
