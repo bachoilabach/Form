@@ -1,6 +1,8 @@
 import { seekBackwardSecond, seekForwardSecond } from '@/constants/ExtendVideo';
 import { ExtendVideoModel } from '@/models/extend.model';
 import { getDetailExtendVideo } from '@/services/extend.services';
+import { saveCurrentTime } from '@/utils/extendVideo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RefObject, useEffect, useRef, useState } from 'react';
 import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
@@ -103,12 +105,25 @@ export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
     setIsBuffering(data.isBuffering);
   };
 
-  const onLoad = (data: OnLoadData) => {
+  const onLoad = async (data: OnLoadData) => {
     setDuration(data.duration);
+    try {
+      const saved = await AsyncStorage.getItem(`video-progress-${id}`);
+      const savedTime = saved ? parseFloat(saved) : 0;
+
+      if (savedTime && videoRef.current) {
+        videoRef.current.seek(savedTime);
+      }
+    } catch (e) {
+      console.log('Failed to load saved time', e);
+    }
   };
 
   const onProgress = (data: OnProgressData) => {
     currentTime.value = data.currentTime;
+    if (Math.floor(currentTime.value) % 5 === 0) {
+      saveCurrentTime(id, currentTime.value);
+    }
   };
 
   const showIconTemporarily = (setter: (v: boolean) => void) => {

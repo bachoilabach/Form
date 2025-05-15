@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export function changeTime(time: string): string {
   let hour = 0;
   let minute = 0;
@@ -29,3 +31,11 @@ export function formatTime(seconds: number): string {
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   }
 }
+
+export const saveCurrentTime = async (videoId: string, time: number) => {
+  try {
+    await AsyncStorage.setItem(`video-progress-${videoId}`, time.toString());
+  } catch (e) {
+    console.log('Failed to save progress', e);
+  }
+};
