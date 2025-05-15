@@ -8,21 +8,21 @@ import Toast from 'react-native-toast-message';
 export function useYouTubeVideoDetail(videoId: string) {
   const [videoDetail, setVideoDetail] = useState<VideoDetailItem>();
   const [isVideoSnippetVisible, setIsVideoSnippetVisible] = useState<boolean>(false);
+  const [snippet, setSnippet] = useState<VideoSnippetModel>();
   const hanldeOpenVideoSnippet = () => {
     setIsVideoSnippetVisible(true);
   };
   const handleCloseVideoSnippet = () => {
     setIsVideoSnippetVisible(false);
   };
-  const { snippet } = videoDetail as { snippet: VideoSnippetModel };
-  const { channelId } = snippet;
-
   const handleGetVideoDetail = async () => {
     try {
       const res = await getVideoDetails(videoId);
       const { items }: { items: VideoDetailItem[] } = res;
       const videoItems = items[0];
+      const { snippet } = items[0];
       setVideoDetail(videoItems);
+      setSnippet(snippet);
     } catch (error: any) {
       Toast.show({
         type: 'error',
@@ -45,7 +45,6 @@ export function useYouTubeVideoDetail(videoId: string) {
     hanldeOpenVideoSnippet,
     handleCloseVideoSnippet,
     snippet,
-    channelId,
     openYoutubeVideo,
   };
 }

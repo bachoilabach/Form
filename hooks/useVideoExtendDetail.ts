@@ -1,55 +1,45 @@
-import { timeUpdateEventConfig } from '@/constants/ExtendVideo';
+import { seekBackwardSecond, seekForwardSecond } from '@/constants/ExtendVideo';
 import { ExtendVideoModel } from '@/models/extend.model';
 import { getDetailExtendVideo } from '@/services/extend.services';
-import { useEvent } from 'expo';
-import { useVideoPlayer } from 'expo-video';
-import { useEffect, useRef, useState } from 'react';
-import { DimensionValue } from 'react-native';
+import { RefObject, useEffect, useRef, useState } from 'react';
+import { Gesture } from 'react-native-gesture-handler';
+import { runOnJS, useSharedValue } from 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
+import { VideoRef } from 'react-native-video';
 
-export function useExtendVideoDetail(id: string, url: string) {
+type OnBufferData = { isBuffering: boolean };
+type OnLoadData = { duration: number };
+type OnProgressData = { currentTime: number };
+type UseExtendVideoProps = {
+  id: string;
+  videoRef: RefObject<VideoRef>;
+};
+export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
   const [extendDetailVideo, setExtendVideoDetail] = useState<ExtendVideoModel>();
-
   const [isFetching, setFetching] = useState<boolean>(false);
   const [isFirstFrameRendered, setFirstFrameRendered] = useState<boolean>(false);
-  const [showControls, setShowControls] = useState(false);
+  const [showControls, setShowControls] = useState<boolean>(false);
   const [isBuffering, setIsBuffering] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const currentTime = useSharedValue(0);
+  const [duration, setDuration] = useState<number>(1);
   const hideControlsTimeout = useRef<number | null>(null);
-
-  const player = useVideoPlayer({ uri: url }, (player) => {
-    player.showNowPlayingNotification = true;
-    player.bufferOptions = {
-      minBufferForPlayback: 5,
-      preferredForwardBufferDuration: 30,
-      maxBufferBytes: 0,
-      waitsToMinimizeStalling: true,
-    };
-    player.timeUpdateEventInterval = 1;
-    player.loop = true;
-    player.play();
-  });
-
-  const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
-
-  const updateCurrentTime = useEvent(player, 'timeUpdate', {
-    currentTime: player.currentTime,
-    ...timeUpdateEventConfig,
-  });
-  const status = useEvent(player, 'statusChange', {
-    status: player.status,
-  });
-
-  const handleStatusChange = () => {
-    if (status.status === 'loading') {
-      setIsBuffering(true);
-    } else {
-      setIsBuffering(false);
-    }
-  };
+  const [showSeekForwardIcon, setShowSeekForwardIcon] = useState(false);
+  const [showSeekBackwardIcon, setShowSeekBackwardIcon] = useState(false);
 
   useEffect(() => {
-    handleStatusChange();
-  }, [status]);
+    handleGetExtendDetailVideo();
+    return () => {
+      if (hideControlsTimeout.current) {
+        clearTimeout(hideControlsTimeout.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    videoRef.current.pause()
+    currentTime.set(0)
+  }, [id]);
 
   const handleGetExtendDetailVideo = async () => {
     try {
@@ -68,42 +58,37 @@ export function useExtendVideoDetail(id: string, url: string) {
     }
   };
 
-  useEffect(() => {
-    handleGetExtendDetailVideo();
-    return () => {
-      if (hideControlsTimeout.current) {
-        clearTimeout(hideControlsTimeout.current);
-      }
-    };
-  }, []);
-
   const hideControl = () => {
     hideControlsTimeout.current = setTimeout(() => {
       setShowControls(false);
     }, 3000);
   };
 
+  const onPlay = () => {
+    videoRef.current.resume();
+    setIsPlaying(true);
+  };
+
+  const onPause = () => {
+    videoRef.current.pause();
+    setIsPlaying(false);
+  };
+
   const togglePlayPause = () => {
     if (isPlaying) {
-      setShowControls(true);
-      player.pause();
+      onPause();
     } else {
-      player.play();
-      hideControl();
+      onPlay();
     }
   };
 
   const toggleControlsWithTimeout = () => {
     if (!showControls) {
       setShowControls(true);
-
       if (hideControlsTimeout.current) {
         clearTimeout(hideControlsTimeout.current);
       }
-
-      if (!isPlaying) {
-        hideControl();
-      }
+      hideControl();
     } else {
       setShowControls(false);
     }
@@ -113,25 +98,53 @@ export function useExtendVideoDetail(id: string, url: string) {
     setFirstFrameRendered(true);
   };
 
-  const { currentTime } = player ?? 0;
-  const { duration } = player ?? 1;
-  const { bufferedPosition } = player ?? 0;
-
-  const playedPercentage = (currentTime / duration) * 100;
-  const bufferedPercentage = (bufferedPosition / duration) * 100;
-
-  const bufferedBarStyle = {
-    width: `${bufferedPercentage}%` as DimensionValue,
+  const handleSeekBySeconds = (second: number) => {
+    videoRef.current.seek(currentTime.value + second);
   };
-  const playedBarStyle = {
-    width: `${playedPercentage}%` as DimensionValue,
+
+  const onBuffer = (data: OnBufferData) => {
+    console.log('Buffering::', data.isBuffering);
+    setIsBuffering(data.isBuffering);
   };
-  const handleSeekBySeconds = (second: number) =>{
-    player.seekBy(second)
-  }
+
+  const onLoad = (data: OnLoadData) => {
+    setDuration(data.duration);
+  };
+
+  const onProgress = (data: OnProgressData) => {
+    currentTime.value = data.currentTime;
+  };
+
+  const showIconTemporarily = (setter: (v: boolean) => void) => {
+    setter(true);
+    setTimeout(() => setter(false), 600);
+  };
+
+  const doubleTapToSeekForward = Gesture.Tap()
+    .maxDuration(250)
+    .numberOfTaps(2)
+    .onStart(() => {
+      runOnJS(handleSeekBySeconds)(seekForwardSecond);
+      runOnJS(showIconTemporarily)(setShowSeekForwardIcon);
+    });
+
+  const doubleTapToSeekBackward = Gesture.Tap()
+    .maxDuration(250)
+    .numberOfTaps(2)
+    .onStart(() => {
+      runOnJS(handleSeekBySeconds)(seekBackwardSecond);
+      runOnJS(showIconTemporarily)(setShowSeekBackwardIcon);
+    });
+
+  const singleTapToOpenControl = Gesture.Tap()
+    .maxDuration(250)
+    .numberOfTaps(1)
+    .onStart(() => {
+      runOnJS(toggleControlsWithTimeout)();
+    });
 
   return {
-    player,
+    videoRef,
     extendDetailVideo,
     isFetching,
     isFirstFrameRendered,
@@ -140,12 +153,17 @@ export function useExtendVideoDetail(id: string, url: string) {
     togglePlayPause,
     handleFirstFrameRender,
     toggleControlsWithTimeout,
-    updateCurrentTime,
     isBuffering,
-    bufferedBarStyle,
-    playedBarStyle,
     currentTime,
     duration,
-    handleSeekBySeconds
+    handleSeekBySeconds,
+    onBuffer,
+    onLoad,
+    onProgress,
+    doubleTapToSeekBackward,
+    doubleTapToSeekForward,
+    singleTapToOpenControl,
+    showSeekForwardIcon,
+    showSeekBackwardIcon,
   };
 }

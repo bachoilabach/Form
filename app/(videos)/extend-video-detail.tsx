@@ -1,126 +1,89 @@
-import { ForwardIcon, PauseIcon, PlayIcon } from '@/assets/icons/SvgIcon';
-import ExntendVideoList from '@/components/Video/ExntendVideoList';
+import ExntendVideoList from '@/components/ExtendVideo/ExntendVideoList';
+import ExtendVideoInformation from '@/components/ExtendVideo/ExtendVideoInformation';
+import ProgressBar from '@/components/Video/ProgressBar';
+import VideoControl from '@/components/Video/VideoControl';
 import { Colors } from '@/constants/Colors';
 import { VIDEO_WIDTH } from '@/constants/Video';
 import { YOUTUBE_VIDEO_HEIGHT } from '@/constants/YouTubeVideo';
 import { useExtendVideoDetail } from '@/hooks/useVideoExtendDetail';
-import { formatTime } from '@/utils/extendVideo';
 import { useRoute } from '@react-navigation/native';
 import { Image } from 'expo-image';
-import { VideoView } from 'expo-video';
-import React, { memo } from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import React, { memo, useRef } from 'react';
+import { ActivityIndicator, SafeAreaView, StyleSheet, View } from 'react-native';
+import Video, { VideoRef } from 'react-native-video';
 
 const ExtendVideoDetail = () => {
   const { params } = useRoute();
   const { id, url, thumbnail } = params as { id: string; url: string; thumbnail: string };
+  const videoRef = useRef<VideoRef>(null);
+
   const {
     extendDetailVideo,
-    togglePlayPause,
     isFetching,
-    showControls,
     isFirstFrameRendered,
-    handleFirstFrameRender,
-    toggleControlsWithTimeout,
+    showControls,
     isPlaying,
-    player,
-    isBuffering,
-    bufferedBarStyle,
-    playedBarStyle,
+    togglePlayPause,
+    handleFirstFrameRender,
+    onBuffer,
+    onLoad,
+    onProgress,
     currentTime,
     duration,
-    handleSeekBySeconds,
-  } = useExtendVideoDetail(id, url);
-  const doubleTapRight = Gesture.Tap()
-    .numberOfTaps(2)
-    .onEnd((_event, success) => {
-      if (success) {
-        handleSeekBySeconds(10);
-      }
-    });
-  const ListHeaderComponent = () => {
-    return (
-      <View style={styles.textContainer}>
-        {extendDetailVideo ? (
-          <>
-            <Text style={styles.title}>{extendDetailVideo.title}</Text>
-            <Text style={styles.author}>Tác giả: {extendDetailVideo.author}</Text>
-            <Text style={styles.description}>Mô tả: {extendDetailVideo.description}</Text>
-            <Text style={styles.releaseYear}>Phát hành: {extendDetailVideo.releaseYear}</Text>
-          </>
-        ) : (
-          <Text>Đang tải dữ liệu...</Text>
-        )}
-      </View>
-    );
-  };
+    doubleTapToSeekForward,
+    doubleTapToSeekBackward,
+    showSeekBackwardIcon,
+    showSeekForwardIcon,
+    singleTapToOpenControl,
+  } = useExtendVideoDetail({ id, videoRef: videoRef });
 
-  if (isFetching) return <ActivityIndicator size={'large'} />;
-
+  if (isFetching) return <ActivityIndicator size="large" />;
   return (
     <SafeAreaView>
-      <TouchableWithoutFeedback onPress={toggleControlsWithTimeout}>
-        <View style={styles.videoWrapper}>
-          <VideoView
-            player={player}
+      <View style={styles.videoWrapper}>
+        <View>
+          <Video
+            ref={videoRef}
+            source={{ uri: url }}
             style={styles.video}
-            nativeControls={false}
-            onFirstFrameRender={handleFirstFrameRender}
+            resizeMode="contain"
+            onBuffer={onBuffer}
+            onLoad={onLoad}
+            onProgress={onProgress}
+            onReadyForDisplay={handleFirstFrameRender}
           />
-          <View style={styles.progressBarContainer}>
-            <View style={[styles.bufferedBar, bufferedBarStyle]} />
-            <View style={[styles.playedBar, playedBarStyle]} />
-          </View>
-          <View style={{zIndex:10}}>
-            <GestureDetector gesture={Gesture.Exclusive(doubleTapRight)}>
-              <ForwardIcon />
-            </GestureDetector>
-          </View>
-          {showControls && (
-            <>
-              <View style={styles.duration}>
-                <Text
-                  style={styles.textDuration}
-                >{`${formatTime(currentTime)}/${formatTime(duration)}`}</Text>
-              </View>
-              <View style={[styles.controlsOverlay, StyleSheet.absoluteFill]}>
-                {!isFirstFrameRendered || isBuffering ? (
-                  <ActivityIndicator size="large" color="white" style={styles.spinner} />
-                ) : (
-                  <Pressable onPress={togglePlayPause} style={styles.playPauseButton}>
-                    <Text style={styles.playPauseText}>
-                      {!isPlaying ? <PlayIcon /> : <PauseIcon />}
-                    </Text>
-                  </Pressable>
-                )}
-              </View>
-            </>
-          )}
+          <VideoControl
+            isFirstFrameRendered={isFirstFrameRendered}
+            showControls={showControls}
+            togglePlayPause={togglePlayPause}
+            isPlaying={isPlaying}
+            showSeekBackwardIcon={showSeekBackwardIcon}
+            showSeekForwardIcon={showSeekForwardIcon}
+            singleTapToOpenControl={singleTapToOpenControl}
+            doubleTapToSeekBackward={doubleTapToSeekBackward}
+            doubleTapToSeekForward={doubleTapToSeekForward}
+            currentTime={currentTime.value}
+            duration={duration}
+          />
 
           {!isFirstFrameRendered && (
             <View style={styles.thumbnailWrapper}>
               <Image
                 source={{ uri: thumbnail }}
-                style={[styles.thumbnail]}
+                style={styles.thumbnail}
                 contentFit="cover"
-                priority={'low'}
+                priority="low"
               />
               <ActivityIndicator size="large" color="white" style={styles.spinner} />
             </View>
           )}
+          <ProgressBar currentTime={currentTime.value} duration={duration} />
         </View>
-      </TouchableWithoutFeedback>
+      </View>
 
-      <ExntendVideoList listHeaderComponent={<ListHeaderComponent />} />
+      <ExntendVideoList
+        listHeaderComponent={<ExtendVideoInformation extendVideoDetail={extendDetailVideo} />}
+      />
     </SafeAreaView>
   );
 };
@@ -136,24 +99,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     position: 'relative',
   },
-  controlsOverlay: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.light.controlOverlay,
-  },
-  playPauseButton: {
-    padding: 10,
-    backgroundColor: Colors.light.backgroundPlayPauseButton,
-    borderRadius: 50,
-  },
-  playPauseText: {
-    fontSize: 30,
-    color: 'white',
-  },
+
   thumbnailWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 2,
+    zIndex: 4,
     ...StyleSheet.absoluteFillObject,
   },
   thumbnail: {
@@ -164,70 +114,9 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   spinner: {
-    zIndex: 3,
+    zIndex: 4,
     backgroundColor: Colors.light.backgroundPlayPauseButton,
-    padding: 8,
+    padding: 10,
     borderRadius: 999,
   },
-  progressBarContainer: {
-    height: 4,
-    width: '100%',
-    backgroundColor: Colors.light.progressBar,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 4,
-  },
-
-  bufferedBar: {
-    height: '100%',
-    backgroundColor: Colors.light.bufferBar,
-    position: 'absolute',
-    left: 0,
-  },
-
-  playedBar: {
-    height: '100%',
-    backgroundColor: Colors.light.playedBar,
-    position: 'absolute',
-    left: 0,
-  },
-  textContainer: {
-    padding: 16,
-    backgroundColor: Colors.light.background,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: Colors.light.text,
-    marginBottom: 8,
-  },
-  author: {
-    fontSize: 18,
-    color: Colors.light.text,
-    marginBottom: 4,
-  },
-  description: {
-    fontSize: 16,
-    color: Colors.light.text,
-    marginBottom: 4,
-  },
-  releaseYear: {
-    fontSize: 16,
-    fontStyle: 'italic',
-    color: Colors.light.text,
-  },
-  duration: {
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    padding: 4,
-    backgroundColor: Colors.light.backgroundDuration,
-    borderRadius: 12,
-  },
-  textDuration: {
-    color: Colors.light.textButton,
-  },
-  forward: {},
 });

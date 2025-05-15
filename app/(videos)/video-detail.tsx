@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import VideoSnippet from '../(modals)/video-snippet';
@@ -26,9 +26,8 @@ export default memo(function YouTubeVideoDetail() {
     videoDetail,
     snippet,
     openYoutubeVideo,
-    channelId
   } = useYouTubeVideoDetail(videoId);
-
+  const { channelId } = snippet || {};
   if (!videoDetail) return <ActivityIndicator />;
 
   const ListHeaderComponent = () => {
@@ -60,7 +59,7 @@ export default memo(function YouTubeVideoDetail() {
         />
         <YouTubeVideoList channelId={channelId} ListHeaderComponent={<ListHeaderComponent />} />
       </View>
-      {isVideoSnippetVisible && (
+      {isVideoSnippetVisible && snippet && (
         <VideoSnippet onClose={handleCloseVideoSnippet} snippet={snippet} />
       )}
     </>
