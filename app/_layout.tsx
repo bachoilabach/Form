@@ -6,6 +6,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Button } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 
 export default function RootLayout() {
@@ -21,36 +22,47 @@ export default function RootLayout() {
 
   return (
     <>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-          <Stack.Screen
-            name="(modals)/survey-form"
-            options={{
-              presentation: 'modal',
-              title: 'Survey Form',
-              headerRight: () => <Button title="Close" onPress={() => router.back()} />,
-            }}
-          />
-          <Stack.Screen
-            name="(modals)/video-snippet"
-            options={{
-              presentation: 'modal',
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="(videos)/video-detail"
-            options={{
-              title: 'Video Detail',
-              headerLeft: () => <Button title="Back" onPress={() => router.back()} />,
-            }}
-          />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
-      <Toast />
+      <GestureHandlerRootView>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+            <Stack.Screen
+              name="(modals)/survey-form"
+              options={{
+                presentation: 'modal',
+                title: 'Survey Form',
+                headerRight: () => <Button title="Close" onPress={() => router.back()} />,
+              }}
+            />
+            <Stack.Screen
+              name="(modals)/video-snippet"
+              options={{
+                presentation: 'modal',
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="(videos)/video-detail"
+              options={{
+                title: 'Video Detail',
+                headerLeft: () => <Button title="Back" onPress={() => router.back()} />,
+              }}
+            />
+            <Stack.Screen
+              name="(videos)/extend-video-detail"
+              options={{
+                title: '',
+                headerShown: false,
+                headerLeft: () => <Button title="Back" onPress={() => router.back()} />,
+                
+              }}
+            />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+        <Toast />
+      </GestureHandlerRootView>
     </>
   );
 }

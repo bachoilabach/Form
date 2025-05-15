@@ -23,9 +23,12 @@ export const searchVideos = async (
       pageToken: nextPageToken || '',
       channelId: channelId || '',
     };
-    const res = await axios.get<YouTubeSearchParams,YouTubeVideoSearchModel>(`${BASE_URL}/search`, {
-      params: createParams({ ...params }),
-    });
+    const res = await axios.get<YouTubeSearchParams, YouTubeVideoSearchModel>(
+      `${BASE_URL}/search`,
+      {
+        params: createParams({ ...params }),
+      },
+    );
     const { data } = res;
     return data;
   } catch (error: any) {
@@ -44,7 +47,7 @@ export const getVideoDetails = async (videoId: string): Promise<VideoDetailModel
       part: `${YouTubeVideoPart.CONTENT_DETAILS},${YouTubeVideoPart.SNIPPET}`,
       id: videoId,
     };
-    const res = await axios.get<YouTubeVideoDetailsParams,VideoDetailModel>(`${BASE_URL}/videos`, {
+    const res = await axios.get<YouTubeVideoDetailsParams, VideoDetailModel>(`${BASE_URL}/videos`, {
       params: createParams({
         ...params,
       }),

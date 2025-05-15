@@ -13,4 +13,4 @@ export const ITEM_VISIBLE_PERCENT_THRESHOLD = 80;
 
 export const initPage = 1;
 
-export const DURATION_VIDEO_SNIPPET = 200
+export const DURATION_VIDEO_SNIPPET = 200;

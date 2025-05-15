@@ -35,7 +35,7 @@ export function CommentIcon() {
 
 export function PlayIcon() {
   return (
-    <Svg width="96" height="96" viewBox="0 0 24 24">
+    <Svg width="40" height="40" viewBox="0 0 24 24">
       <Path
         fill="#fff"
         stroke="#fff"
@@ -50,7 +50,7 @@ export function PlayIcon() {
 
 export function PauseIcon() {
   return (
-    <Svg width="24" height="24" viewBox="0 0 24 24">
+    <Svg width="40" height="40" viewBox="0 0 24 24">
       <Path
         fill="#fff"
         fill-rule="evenodd"
@@ -92,6 +92,43 @@ export function YouTubeIcon() {
           d="M30.05 44.65L45.256 36L30.05 27.35Z"
         />
       </G>
+    </Svg>
+  );
+}
+
+export function CameraIcon({ color }: { color: string }) {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 16 16">
+      <Path
+        fill={color}
+        d="M3.5 3A2.5 2.5 0 0 0 1 5.5v5A2.5 2.5 0 0 0 3.5 13h5a2.5 2.5 0 0 0 2.5-2.5v-.127l2.035 1.405a1.25 1.25 0 0 0 1.96-1.028V5.252a1.25 1.25 0 0 0-1.96-1.028L11 5.629V5.5A2.5 2.5 0 0 0 8.5 3zM11 6.844l2.604-1.798a.25.25 0 0 1 .392.206v5.498a.25.25 0 0 1-.392.205L11 9.158zM2 5.5A1.5 1.5 0 0 1 3.5 4h5A1.5 1.5 0 0 1 10 5.5v5A1.5 1.5 0 0 1 8.5 12h-5A1.5 1.5 0 0 1 2 10.5z"
+      ></Path>
+    </Svg>
+  );
+}
+
+export function ForwardIcon() {
+  return (
+    <Svg width={28} height={28} viewBox="0 0 24 24">
+      <Path
+        fill="none"
+        stroke="#fff"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="M3 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811zm9.75 0c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061a1.125 1.125 0 0 1-1.683-.977z"
+      ></Path>
+    </Svg>
+  );
+}
+
+export function BackwardIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 512 512">
+      <Path
+        fill="#fff"
+        d="M455.979 424.271A24.053 24.053 0 0 0 480 400.251V112.015a24 24 0 0 0-38.285-19.286L264 224.369V112.015a24 24 0 0 0-38.285-19.286L31.155 236.847a24 24 0 0 0 0 38.57l194.56 144.119A24 24 0 0 0 264 400.251V287.9l177.715 131.637a23.92 23.92 0 0 0 14.264 4.734M232 384.37L58.88 256.132L232 127.9ZM448 127.9v256.47L274.88 256.132Z"
+      ></Path>
     </Svg>
   );
 }

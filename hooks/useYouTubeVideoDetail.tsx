@@ -1,24 +1,28 @@
-import { VideoDetailItem } from '@/models/youtube_video.model';
+import { VideoDetailItem, VideoSnippetModel } from '@/models/youtube_video.model';
 import { getVideoDetails } from '@/services/youtube.services';
+import { youtubeUrl } from '@/utils/youTubeUltill';
 import { useEffect, useState } from 'react';
+import { Linking } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 export function useYouTubeVideoDetail(videoId: string) {
   const [videoDetail, setVideoDetail] = useState<VideoDetailItem>();
   const [isVideoSnippetVisible, setIsVideoSnippetVisible] = useState<boolean>(false);
+  const [snippet, setSnippet] = useState<VideoSnippetModel>();
   const hanldeOpenVideoSnippet = () => {
     setIsVideoSnippetVisible(true);
   };
   const handleCloseVideoSnippet = () => {
     setIsVideoSnippetVisible(false);
   };
-
   const handleGetVideoDetail = async () => {
     try {
       const res = await getVideoDetails(videoId);
       const { items }: { items: VideoDetailItem[] } = res;
       const videoItems = items[0];
+      const { snippet } = items[0];
       setVideoDetail(videoItems);
+      setSnippet(snippet);
     } catch (error: any) {
       Toast.show({
         type: 'error',
@@ -31,10 +35,16 @@ export function useYouTubeVideoDetail(videoId: string) {
   useEffect(() => {
     handleGetVideoDetail();
   }, [videoId]);
+
+  const openYoutubeVideo = async (videoId: string) => {
+    Linking.openURL(youtubeUrl(videoId)).catch((err) => console.error('Failed to open URL:', err));
+  };
   return {
     videoDetail,
     isVideoSnippetVisible,
     hanldeOpenVideoSnippet,
     handleCloseVideoSnippet,
+    snippet,
+    openYoutubeVideo,
   };
 }

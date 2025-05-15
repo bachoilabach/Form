@@ -13,8 +13,8 @@ export type LoadingState = {
 };
 
 export function useVideos() {
-  const [videos, setVideos] = useState<VideoModel[]>([]);
-  const [page, setPage] = useState<number>(initPage);
+  const [videoList, setVideoList] = useState<VideoModel[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(initPage);
   const [currentVisibleIndex, setCurrentVisibleIndex] = useState<number>(0);
 
   const [loadingState, setLoadingState] = useState<LoadingState>({
@@ -28,7 +28,7 @@ export function useVideos() {
     [],
   );
 
-  const cacheVideos = useCallback(async (videos: VideoModel[]) => {
+  const cacheVideoList = useCallback(async (videos: VideoModel[]) => {
     try {
       const maxVideos = 50;
       const cacheData = {
@@ -41,7 +41,7 @@ export function useVideos() {
     }
   }, []);
 
-  const getCachedVideos = useCallback(async () => {
+  const loadCachedVideoList = useCallback(async () => {
     const ttl = 5 * 60 * 1000;
     try {
       const cached = await AsyncStorage.getItem('cachedVideos');
@@ -61,27 +61,28 @@ export function useVideos() {
     }
   }, []);
 
-  const handleGetVideos = async (requestedPage: number) => {
+  const fetchVideos = async (requestedPage: number) => {
     const isInitial = requestedPage === initPage && !loadingState.isRefreshing;
 
     try {
       if (isInitial) setLoadingFlags({ isLoading: true });
-      if (!isInitial) setLoadingFlags({ isLoadingMore: true });
+      else setLoadingFlags({ isLoadingMore: true });
 
       const res = await getVideos(requestedPage);
       const { hits } = res;
 
       if (requestedPage === initPage) {
-        setVideos(hits);
-        cacheVideos(hits);
+        setVideoList(hits);
+        cacheVideoList(hits);
       } else {
-        setVideos((prev) => {
-          const updatedVideos = [...prev, ...hits];
-          cacheVideos(updatedVideos);
-          return updatedVideos;
+        setVideoList((prev) => {
+          const updatedList = [...prev, ...hits];
+          cacheVideoList(updatedList);
+          return updatedList;
         });
       }
-      setPage(requestedPage);
+
+      setCurrentPage(requestedPage);
     } catch (error: any) {
       Toast.show({ type: 'error', text1: error.message });
     } finally {
@@ -92,25 +93,25 @@ export function useVideos() {
   const pullToRefresh = useCallback(async () => {
     setLoadingFlags({ isRefreshing: true });
     await AsyncStorage.removeItem('cachedVideos');
-    await handleGetVideos(initPage);
+    await fetchVideos(initPage);
   }, []);
 
   const handleLoadMoreVideos = debounce(async () => {
     if (Object.values(loadingState).some(Boolean)) return;
-    const nextPage = page + 1;
-    await handleGetVideos(nextPage);
+    const nextPage = currentPage + 1;
+    await fetchVideos(nextPage);
   }, 1000);
 
-  const initVideos = async () => {
-    const cachedVideos = await getCachedVideos();
-    if (cachedVideos.length > 0) {
-      setVideos(cachedVideos);
+  const initializeVideos = async () => {
+    const cached = await loadCachedVideoList();
+    if (cached.length > 0) {
+      setVideoList(cached);
     }
-    await handleGetVideos(initPage);
+    await fetchVideos(initPage);
   };
+
   useEffect(() => {
-    initVideos();
-    return () => {};
+    initializeVideos();
   }, []);
 
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
@@ -125,9 +126,9 @@ export function useVideos() {
   };
 
   return {
-    videos,
+    videoList,
     ...loadingState,
-    handleGetVideos,
+    fetchVideos,
     handleLoadMoreVideos,
     pullToRefresh,
     currentVisibleIndex,
