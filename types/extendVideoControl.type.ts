@@ -1,4 +1,5 @@
 import { GestureType } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/gesture';
+import { SharedValue } from 'react-native-reanimated';
 
 export type ExtendVideoControlType = {
   showSeekBackwardIcon: boolean;
@@ -10,11 +11,11 @@ export type ExtendVideoControlType = {
   showControls: boolean;
   togglePlayPause: () => void;
   isPlaying: boolean;
-  currentTime: number;
+  currentTimeForUI: number;
   duration: number;
 };
 
 export type ProgressBarType = {
-  currentTime: number,
-  duration: number
+  currentTime: SharedValue<number>;
+  duration: number;
 };

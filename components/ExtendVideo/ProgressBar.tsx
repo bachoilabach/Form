@@ -5,9 +5,8 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 const ProgressBar = ({ currentTime, duration }: ProgressBarType) => {
-  console.log(currentTime)
   const animatedStyle = useAnimatedStyle(() => {
-    const percentage = (currentTime / duration) * 100;
+    const percentage = (currentTime.value / duration) * 100;
     return {
       width: `${percentage}%`,
     };

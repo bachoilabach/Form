@@ -3,7 +3,7 @@ import { ExtendVideoModel } from '@/models/extend.model';
 import { getDetailExtendVideo } from '@/services/extend.services';
 import { RefObject, useEffect, useRef, useState } from 'react';
 import { Gesture } from 'react-native-gesture-handler';
-import { runOnJS, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 import { VideoRef } from 'react-native-video';
 
@@ -26,6 +26,7 @@ export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
   const hideControlsTimeout = useRef<number | null>(null);
   const [showSeekForwardIcon, setShowSeekForwardIcon] = useState(false);
   const [showSeekBackwardIcon, setShowSeekBackwardIcon] = useState(false);
+  const [currentTimeForUI, setCurrentTimeForUI] = useState<number>(0);
 
   useEffect(() => {
     handleGetExtendDetailVideo();
@@ -35,11 +36,6 @@ export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
       }
     };
   }, []);
-
-  useEffect(() => {
-    videoRef.current.pause()
-    currentTime.set(0)
-  }, [id]);
 
   const handleGetExtendDetailVideo = async () => {
     try {
@@ -143,6 +139,16 @@ export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
       runOnJS(toggleControlsWithTimeout)();
     });
 
+  useAnimatedReaction(
+    () => currentTime.value,
+    (value, prev) => {
+      if (Math.floor(value) !== Math.floor(prev ?? 0)) {
+        runOnJS(setCurrentTimeForUI)(value);
+      }
+    },
+    [],
+  );
+
   return {
     videoRef,
     extendDetailVideo,
@@ -165,5 +171,6 @@ export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
     singleTapToOpenControl,
     showSeekForwardIcon,
     showSeekBackwardIcon,
+    currentTimeForUI,
   };
 }

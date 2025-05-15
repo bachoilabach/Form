@@ -55,9 +55,7 @@ export default function RootLayout() {
                 title: '',
                 headerShown: false,
                 headerLeft: () => <Button title="Back" onPress={() => router.back()} />,
-              }}
-              getId={({ params }) => {
-                return params.id;
+                
               }}
             />
           </Stack>

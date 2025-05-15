@@ -1,6 +1,6 @@
 import ExntendVideoList from '@/components/ExtendVideo/ExntendVideoList';
 import ExtendVideoInformation from '@/components/ExtendVideo/ExtendVideoInformation';
-import ProgressBar from '@/components/Video/ProgressBar';
+import ProgressBar from '@/components/ExtendVideo/ProgressBar';
 import VideoControl from '@/components/Video/VideoControl';
 import { Colors } from '@/constants/Colors';
 import { VIDEO_WIDTH } from '@/constants/Video';
@@ -35,6 +35,7 @@ const ExtendVideoDetail = () => {
     showSeekBackwardIcon,
     showSeekForwardIcon,
     singleTapToOpenControl,
+    currentTimeForUI
   } = useExtendVideoDetail({ id, videoRef: videoRef });
 
   if (isFetching) return <ActivityIndicator size="large" />;
@@ -62,7 +63,7 @@ const ExtendVideoDetail = () => {
             singleTapToOpenControl={singleTapToOpenControl}
             doubleTapToSeekBackward={doubleTapToSeekBackward}
             doubleTapToSeekForward={doubleTapToSeekForward}
-            currentTime={currentTime.value}
+            currentTimeForUI={currentTimeForUI}
             duration={duration}
           />
 
@@ -77,7 +78,7 @@ const ExtendVideoDetail = () => {
               <ActivityIndicator size="large" color="white" style={styles.spinner} />
             </View>
           )}
-          <ProgressBar currentTime={currentTime.value} duration={duration} />
+          <ProgressBar currentTime={currentTime} duration={duration} />
         </View>
       </View>
 

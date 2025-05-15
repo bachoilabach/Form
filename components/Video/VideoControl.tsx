@@ -8,7 +8,7 @@ import { GestureDetector } from 'react-native-gesture-handler';
 
 const VideoControl = (extendVideoControlProps: ExtendVideoControlType) => {
   const {
-    currentTime,
+    currentTimeForUI,
     doubleTapToSeekBackward,
     doubleTapToSeekForward,
     duration,
@@ -64,7 +64,7 @@ const VideoControl = (extendVideoControlProps: ExtendVideoControlType) => {
           <View style={styles.duration}>
             <Text
               style={styles.textDuration}
-            >{`${formatTime(currentTime)}/${formatTime(duration)}`}</Text>
+            >{`${formatTime(currentTimeForUI)}/${formatTime(duration)}`}</Text>
           </View>
         </>
       )}
