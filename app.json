@@ -9,14 +9,20 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bachoilabach.Form"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ],
+      "package": "com.bachoilabach.Form"
     },
     "web": {
       "bundler": "metro",
@@ -39,6 +45,18 @@
         {
           "supportsBackgroundPlayback": true,
           "supportsPictureInPicture": true
+        }
+      ],
+      [
+        "react-native-video",
+        {
+          "enableNotificationControls": true,
+          "androidExtensions": {
+            "useExoplayerRtsp": false,
+            "useExoplayerSmoothStreaming": false,
+            "useExoplayerHls": false,
+            "useExoplayerDash": false
+          }
         }
       ]
     ],

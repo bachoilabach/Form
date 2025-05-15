@@ -38,7 +38,5 @@ yarn-error.*
 
 app-example
 
-android/.gradle
-android/app/build
-ios/Pods
-ios/build
+android/
+ios/
