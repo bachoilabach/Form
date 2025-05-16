@@ -1,7 +1,7 @@
-import { KeyboardType } from '@/enums/KeyboardType';
 import React from 'react';
 import { useController } from 'react-hook-form';
 import { StyleSheet, Text, TextInput } from 'react-native';
+import { KeyboardType } from '@/enums/KeyboardType';
 
 interface CustomFormInputProps {
   title: string;

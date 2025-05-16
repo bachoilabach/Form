@@ -1,9 +1,9 @@
-import { VIDEO_HEIGHT, VIDEO_WIDTH } from '@/constants/Video';
-import { VideoModel } from '@/models/video.model';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useEvent } from 'expo';
 import { useVideoPlayer } from 'expo-video';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { VIDEO_HEIGHT, VIDEO_WIDTH } from '@/constants/Video';
+import { VideoModel } from '@/models/video.model';
 
 export function useVideoCard(video: VideoModel, index: number, currentVisibleIndex: number) {
   const bottomTabHeight = useBottomTabBarHeight();
@@ -21,7 +21,7 @@ export function useVideoCard(video: VideoModel, index: number, currentVisibleInd
   });
 
   const videoLandScape = useMemo(() => {
-    let isLandscape = width > height;
+    const isLandscape = width > height;
     return isLandscape
       ? {
           width: VIDEO_HEIGHT,
@@ -44,7 +44,7 @@ export function useVideoCard(video: VideoModel, index: number, currentVisibleInd
     }
   }, [shouldPlay]);
 
-  const handlePlayOrPause = useCallback(() => {
+  const togglePlay = useCallback(() => {
     if (player.playing) {
       player.pause();
     } else {
@@ -65,7 +65,7 @@ export function useVideoCard(video: VideoModel, index: number, currentVisibleInd
     userImageURL,
     videoLandScape,
     isPlaying,
-    handlePlayOrPause,
+    togglePlay,
     player,
     isVideoLoaded,
     onFirstFrameRender,

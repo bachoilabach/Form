@@ -3,6 +3,7 @@ import { Colors } from '@/constants/Colors';
 import { END_REACHED_THRESHOLD } from '@/constants/Video';
 import { FlatListVideoConfig } from '@/enums/Videos';
 import { useVideos } from '@/hooks/useVideos';
+import { VideoModel } from '@/models/video.model';
 import {
   ActivityIndicator,
   FlatList,
@@ -17,17 +18,28 @@ export default function Explore() {
   const {
     videoList,
     isLoading,
-    isRefreshing,
     pullToRefresh,
-    isLoadingMore,
     currentVisibleIndex,
     onViewableItemsChanged,
     viewabilityConfig,
-    handleLoadMoreVideos
+    handleLoadMoreVideos,
   } = useVideos();
-  const renderItem = ({ item, index }: any) => (
+  const renderItem = ({ item, index }: { item: VideoModel; index: number }) => (
     <VideoCard video={item} index={index} currentVisibleIndex={currentVisibleIndex} />
   );
+  const keyExtractor = (item: VideoModel, index: number) => `${item.id}-${index}`;
+  if (isLoading && videoList.length === 0) {
+    return (
+      <SafeAreaView>
+        <ActivityIndicator size={'large'} color={'#fff'} />
+      </SafeAreaView>
+    );
+  }
+  if (videoList.length === 0) {
+    return (
+      <Text>Không có video</Text>
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -39,30 +51,25 @@ export default function Explore() {
           <Text style={styles.textButton}>Explore</Text>
         </TouchableOpacity>
       </View>
-      {isLoading ? (
-        <SafeAreaView>
-          <ActivityIndicator size={'large'} color={'#fff'} />
-        </SafeAreaView>
-      ) : (
-        <View style={styles.container}>
-          <FlatList
-            data={videoList}
-            keyExtractor={(item, index) => `${item.id}-${index}`}
-            renderItem={renderItem}
-            {...FlatListVideoConfig}
-            onEndReached={handleLoadMoreVideos}
-            onEndReachedThreshold={END_REACHED_THRESHOLD}
-            refreshing={isRefreshing}
-            onRefresh={pullToRefresh}
-            onViewableItemsChanged={onViewableItemsChanged}
-            viewabilityConfig={viewabilityConfig}
-            ListFooterComponent={
-              isLoadingMore ? <ActivityIndicator size={'large'} color={'#fff'} /> : null
-            }
-            contentContainerStyle={{ paddingBottom: 100 }}
-          />
-        </View>
-      )}
+
+      <View style={styles.container}>
+        <FlatList
+          data={videoList}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          {...FlatListVideoConfig}
+          onEndReached={handleLoadMoreVideos}
+          onEndReachedThreshold={END_REACHED_THRESHOLD}
+          refreshing={isLoading}
+          onRefresh={pullToRefresh}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
+          ListFooterComponent={
+            isLoading ? <ActivityIndicator size={'large'} color={'#fff'} /> : null
+          }
+          contentContainerStyle={{ paddingBottom: 100 }}
+        />
+      </View>
     </View>
   );
 }

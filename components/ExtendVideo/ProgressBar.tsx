@@ -1,8 +1,8 @@
-import { Colors } from '@/constants/Colors';
-import { ProgressBarType } from '@/types/extendVideoControl.type';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import { Colors } from '@/constants/Colors';
+import { ProgressBarType } from '@/types/extendVideoControl.type';
 
 const ProgressBar = ({ currentTime, duration }: ProgressBarType) => {
   const animatedStyle = useAnimatedStyle(() => {

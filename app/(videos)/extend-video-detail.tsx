@@ -1,7 +1,7 @@
 import ExntendVideoList from '@/components/ExtendVideo/ExntendVideoList';
 import ExtendVideoInformation from '@/components/ExtendVideo/ExtendVideoInformation';
 import ProgressBar from '@/components/ExtendVideo/ProgressBar';
-import VideoControl from '@/components/Video/VideoControl';
+import VideoControl from '@/components/ExtendVideo/VideoControl';
 import { Colors } from '@/constants/Colors';
 import { VIDEO_WIDTH } from '@/constants/Video';
 import { YOUTUBE_VIDEO_HEIGHT } from '@/constants/YouTubeVideo';
@@ -14,7 +14,7 @@ import Video, { VideoRef } from 'react-native-video';
 
 const ExtendVideoDetail = () => {
   const { params } = useRoute();
-  const { id, url, thumbnail } = params as { id: string; url: string; thumbnail: string };
+  const { id } = params as { id: string };
   const videoRef = useRef<VideoRef>(null);
 
   const {
@@ -23,7 +23,7 @@ const ExtendVideoDetail = () => {
     isFirstFrameRendered,
     showControls,
     isPlaying,
-    togglePlayPause,
+    togglePlay,
     handleFirstFrameRender,
     onBuffer,
     onLoad,
@@ -35,7 +35,7 @@ const ExtendVideoDetail = () => {
     showSeekBackwardIcon,
     showSeekForwardIcon,
     singleTapToOpenControl,
-    currentTimeForUI
+    currentTimeForUI,
   } = useExtendVideoDetail({ id, videoRef: videoRef });
 
   if (isFetching) return <ActivityIndicator size="large" />;
@@ -45,7 +45,7 @@ const ExtendVideoDetail = () => {
         <View>
           <Video
             ref={videoRef}
-            source={{ uri: url }}
+            source={{ uri: extendDetailVideo?.url }}
             style={styles.video}
             resizeMode="contain"
             onBuffer={onBuffer}
@@ -56,7 +56,7 @@ const ExtendVideoDetail = () => {
           <VideoControl
             isFirstFrameRendered={isFirstFrameRendered}
             showControls={showControls}
-            togglePlayPause={togglePlayPause}
+            togglePlayPause={togglePlay}
             isPlaying={isPlaying}
             showSeekBackwardIcon={showSeekBackwardIcon}
             showSeekForwardIcon={showSeekForwardIcon}
@@ -70,7 +70,7 @@ const ExtendVideoDetail = () => {
           {!isFirstFrameRendered && (
             <View style={styles.thumbnailWrapper}>
               <Image
-                source={{ uri: thumbnail }}
+                source={{ uri: extendDetailVideo?.thumbnail }}
                 style={styles.thumbnail}
                 contentFit="cover"
                 priority="low"

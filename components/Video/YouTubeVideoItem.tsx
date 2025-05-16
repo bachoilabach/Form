@@ -1,10 +1,10 @@
-import { VIDEO_WIDTH } from '@/constants/Video';
-import { YOUTUBE_VIDEO_HEIGHT } from '@/constants/YouTubeVideo';
-import { YouTubeVideoSearchItemsModel } from '@/models/youtube_video.model';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import React, { memo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { VIDEO_WIDTH } from '@/constants/Video';
+import { YOUTUBE_VIDEO_HEIGHT } from '@/constants/YouTubeVideo';
+import { YouTubeVideoSearchItemsModel } from '@/models/youtubeVideo.model';
 
 const YouTubeVideoItem = (YouTubeVideoProps: YouTubeVideoSearchItemsModel) => {
   const { snippet, id } = YouTubeVideoProps;

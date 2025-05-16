@@ -1,7 +1,9 @@
+import { useCallback, useEffect, useState } from 'react';
 import { SurveyResponse } from '@/models/survey.model';
 import { fetchSurvey } from '@/services/survey.services';
-import { useCallback, useEffect, useState } from 'react';
-import Toast from 'react-native-toast-message';
+import { toastService } from '@/services/toast.services';
+import { extractAxiosErrorMessage } from '@/utils/errorUtil';
+import { Status } from './useShowToast';
 
 export function useSurvey() {
   const [surveys, setSurveys] = useState<SurveyResponse[]>();
@@ -12,12 +14,14 @@ export function useSurvey() {
     try {
       setLoading(true);
       const res = await fetchSurvey();
+      if (!res || res.length === 0) {
+        setSurveys([]);
+        toastService.showToast(Status.error, 'Không tìm thấy survey nào');
+        return;
+      }
       setSurveys(res);
-    } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: error.message,
-      });
+    } catch (error) {
+      extractAxiosErrorMessage(error);
     } finally {
       setLoading(false);
     }

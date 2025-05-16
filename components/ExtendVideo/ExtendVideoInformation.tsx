@@ -1,7 +1,7 @@
-import { Colors } from '@/constants/Colors';
-import { ExtendVideoModel } from '@/models/extend.model';
 import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Colors } from '@/constants/Colors';
+import { ExtendVideoModel } from '@/models/extend.model';
 type ExtendVideoInforProps = {
   extendVideoDetail: ExtendVideoModel | undefined;
 };

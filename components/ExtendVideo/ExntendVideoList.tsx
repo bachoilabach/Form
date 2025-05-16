@@ -1,36 +1,21 @@
+import React from 'react';
+import { ActivityIndicator, FlatList, Text } from 'react-native';
+import { useExtendVideos } from '@/hooks/useExtendVideos';
 import { ExtendVideoModel } from '@/models/extend.model';
-import { getAllVideos } from '@/services/extend.services';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
-import Toast from 'react-native-toast-message';
 import ExtendVideoItem from './ExtendVideoItem';
 type ExtendVideoListProps = {
   listHeaderComponent?: React.ReactElement;
 };
 const ExntendVideoList = (extendVideoListProps: ExtendVideoListProps) => {
   const { listHeaderComponent } = extendVideoListProps;
-  const [videos, setVideos] = useState<ExtendVideoModel[]>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const handleGetVideos = async () => {
-    try {
-      setLoading(true);
-      const res = await getAllVideos();
-      setVideos(res);
-    } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.message,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    handleGetVideos();
-  }, []);
+  const { loading, videos } = useExtendVideos();
   const renderItem = ({ item }: { item: ExtendVideoModel }) => <ExtendVideoItem {...item} />;
-  if (loading) return <ActivityIndicator size={'large'} />;
+  if (loading && videos?.length === 0) {
+    return <ActivityIndicator size={'large'} />;
+  }
+  if (videos?.length === 0) {
+    return <Text>Không có video nào!</Text>;
+  }
   return (
     <FlatList
       data={videos}

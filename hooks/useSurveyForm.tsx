@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Mode } from '@/components/Input/DateInput';
@@ -8,9 +9,10 @@ import { Gender } from '@/enums/Gender';
 import { KeyboardType } from '@/enums/KeyboardType';
 import { SurveyResponse } from '@/models/survey.model';
 import { submitSurveys } from '@/services/survey.services';
+import { toastService } from '@/services/toast.services';
 import { useSurveySelector } from '@/stores/surveySelector/surveySelector';
-import { useCallback, useEffect, useMemo } from 'react';
-import Toast from 'react-native-toast-message';
+import { extractAxiosErrorMessage } from '@/utils/errorUtil';
+import { Status } from './useShowToast';
 
 export function useSurveyForm() {
   const {
@@ -53,16 +55,10 @@ export function useSurveyForm() {
           ...data,
         };
         await submitSurveys(surveyWithId);
-        Toast.show({
-          type: 'success',
-          text1: 'Submit Success',
-        });
+        toastService.showToast(Status.success, 'Submit Success');
         openSuccessModal(surveyWithId);
-      } catch (error: any) {
-        Toast.show({
-          type: 'error',
-          text1: error.message,
-        });
+      } catch (error) {
+        extractAxiosErrorMessage(error);
       }
     },
     [reset],

@@ -17,3 +17,7 @@ export interface YouTubeVideoDetailsParams {
   part: string;
   id: string;
 }
+export type FetchYouTubeVideoParams = {
+  pageToken?: string;
+  isRefresh?: boolean;
+};

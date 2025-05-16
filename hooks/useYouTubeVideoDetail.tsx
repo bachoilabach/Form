@@ -1,9 +1,11 @@
-import { VideoDetailItem, VideoSnippetModel } from '@/models/youtube_video.model';
-import { getVideoDetails } from '@/services/youtube.services';
-import { youtubeUrl } from '@/utils/youTubeUltill';
 import { useEffect, useState } from 'react';
 import { Linking } from 'react-native';
-import Toast from 'react-native-toast-message';
+import { VideoDetailItem, VideoSnippetModel } from '@/models/youtubeVideo.model';
+import { toastService } from '@/services/toast.services';
+import { getVideoDetails } from '@/services/youtube.services';
+import { extractAxiosErrorMessage } from '@/utils/errorUtil';
+import { youtubeUri } from '@/utils/youTubeUltil';
+import { Status } from './useShowToast';
 
 export function useYouTubeVideoDetail(videoId: string) {
   const [videoDetail, setVideoDetail] = useState<VideoDetailItem>();
@@ -18,17 +20,22 @@ export function useYouTubeVideoDetail(videoId: string) {
   const handleGetVideoDetail = async () => {
     try {
       const res = await getVideoDetails(videoId);
-      const { items }: { items: VideoDetailItem[] } = res;
-      const videoItems = items[0];
+      const { items }: { items: VideoDetailItem } = res;
+      if (res! || !items) {
+        setVideoDetail(undefined);
+        setSnippet(undefined);
+        const msg = 'Không tìm thấy video chi tiết';
+        toastService.showToast(Status.error, msg);
+        return;
+      }
       const { snippet } = items[0];
+      const videoItems = items[0];
       setVideoDetail(videoItems);
       setSnippet(snippet);
-    } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.message,
-      });
+    } catch (error) {
+      extractAxiosErrorMessage(error);
+      setVideoDetail(undefined);
+      setSnippet(undefined);
     }
   };
 
@@ -37,7 +44,7 @@ export function useYouTubeVideoDetail(videoId: string) {
   }, [videoId]);
 
   const openYoutubeVideo = async (videoId: string) => {
-    Linking.openURL(youtubeUrl(videoId)).catch((err) => console.error('Failed to open URL:', err));
+    Linking.openURL(youtubeUri(videoId)).catch((err) => console.error('Failed to open URL:', err));
   };
   return {
     videoDetail,

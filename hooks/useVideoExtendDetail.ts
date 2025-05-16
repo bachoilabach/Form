@@ -1,13 +1,13 @@
-import { seekBackwardSecond, seekForwardSecond } from '@/constants/ExtendVideo';
-import { ExtendVideoModel } from '@/models/extend.model';
-import { getDetailExtendVideo } from '@/services/extend.services';
-import { saveCurrentTime } from '@/utils/extendVideo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RefObject, useEffect, useRef, useState } from 'react';
 import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
-import Toast from 'react-native-toast-message';
 import { VideoRef } from 'react-native-video';
+import { seekBackwardSecond, seekForwardSecond } from '@/constants/ExtendVideo';
+import { ExtendVideoModel } from '@/models/extend.model';
+import { getDetailExtendVideo } from '@/services/extend.services';
+import { extractAxiosErrorMessage } from '@/utils/errorUtil';
+import { saveCurrentTime } from '@/utils/extendVideo';
 
 type OnBufferData = { isBuffering: boolean };
 type OnLoadData = { duration: number };
@@ -43,14 +43,15 @@ export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
     try {
       setFetching(true);
       const res = await getDetailExtendVideo(id);
+      if (!res || res.length === 0) {
+        setExtendVideoDetail(undefined);
+        return;
+      }
       const result = res[0];
       setExtendVideoDetail(result);
-    } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.message,
-      });
+    } catch (error) {
+      extractAxiosErrorMessage(error);
+      setExtendVideoDetail(undefined);
     } finally {
       setFetching(false);
     }
@@ -72,7 +73,7 @@ export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
     setIsPlaying(false);
   };
 
-  const togglePlayPause = () => {
+  const togglePlay = () => {
     if (isPlaying) {
       onPause();
     } else {
@@ -101,7 +102,6 @@ export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
   };
 
   const onBuffer = (data: OnBufferData) => {
-    console.log('Buffering::', data.isBuffering);
     setIsBuffering(data.isBuffering);
   };
 
@@ -121,9 +121,7 @@ export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
 
   const onProgress = (data: OnProgressData) => {
     currentTime.value = data.currentTime;
-    if (Math.floor(currentTime.value) % 5 === 0) {
-      saveCurrentTime(id, currentTime.value);
-    }
+    saveCurrentTime(id, currentTime.value);
   };
 
   const showIconTemporarily = (setter: (v: boolean) => void) => {
@@ -171,7 +169,7 @@ export function useExtendVideoDetail({ id, videoRef }: UseExtendVideoProps) {
     isFirstFrameRendered,
     showControls,
     isPlaying,
-    togglePlayPause,
+    togglePlay,
     handleFirstFrameRender,
     toggleControlsWithTimeout,
     isBuffering,

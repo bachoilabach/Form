@@ -1,5 +1,5 @@
-import { SurveyResponse } from '@/models/survey.model';
 import { create } from 'zustand';
+import { SurveyResponse } from '@/models/survey.model';
 
 interface SurveyStore {
   submittedSurvey: SurveyResponse | null;

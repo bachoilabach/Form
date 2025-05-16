@@ -1,11 +1,3 @@
-import CustomFormInput from '@/components/Input/CustomFormInput';
-import DateInput, { Mode } from '@/components/Input/DateInput';
-import SelectInput from '@/components/Input/SelectInput';
-import ModalSuccess from '@/components/Survey/ModalSuccess';
-import { fullNameVietNamese, number } from '@/constants/Regex';
-import { behavior, KEY_BOARD_OFFSET } from '@/constants/Survey';
-import { KeyboardType } from '@/enums/KeyboardType';
-import { useSurveyForm } from '@/hooks/useSurveyForm';
 import React, { memo } from 'react';
 import {
   Keyboard,
@@ -16,6 +8,14 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
+import CustomFormInput from '@/components/Input/CustomFormInput';
+import DateInput, { Mode } from '@/components/Input/DateInput';
+import SelectInput from '@/components/Input/SelectInput';
+import ModalSuccess from '@/components/Survey/ModalSuccess';
+import { fullNameVietNamese, number } from '@/constants/Regex';
+import { behavior, KEY_BOARD_OFFSET } from '@/constants/Survey';
+import { KeyboardType } from '@/enums/KeyboardType';
+import { useSurveyForm } from '@/hooks/useSurveyForm';
 
 const SurveyForm = () => {
   const { control, errors, onSubmit, genderItems } = useSurveyForm();
@@ -31,8 +31,8 @@ const SurveyForm = () => {
           <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
             <CustomFormInput
               control={control}
-              title={'Full Name'}
-              name={'fullName'}
+              title="Full Name"
+              name="fullName"
               requiredMessage={'Full Name is required'}
               regex={fullNameVietNamese}
               patternMessage="Full name must contain only letters (including Vietnamese characters) and spaces."

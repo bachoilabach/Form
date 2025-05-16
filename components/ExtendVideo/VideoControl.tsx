@@ -1,10 +1,10 @@
+import React, { memo } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { GestureDetector } from 'react-native-gesture-handler';
 import { BackwardIcon, ForwardIcon, PauseIcon, PlayIcon } from '@/assets/icons/SvgIcon';
 import { Colors } from '@/constants/Colors';
 import { ExtendVideoControlType } from '@/types/extendVideoControl.type';
 import { formatTime } from '@/utils/extendVideo';
-import React, { memo } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { GestureDetector } from 'react-native-gesture-handler';
 
 const VideoControl = (extendVideoControlProps: ExtendVideoControlType) => {
   const {

@@ -1,8 +1,8 @@
-import { useInput } from '@/hooks/useInput';
 import React from 'react';
 import { useController } from 'react-hook-form';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useInput } from '@/hooks/useInput';
 
 export enum Mode {
   DATE = 'date',
