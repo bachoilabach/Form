@@ -1,28 +1,20 @@
-import { YouTubeVideoSearchItemsModel } from '@/models/youtube_video.model';
-import { searchVideos } from '@/services/youtube.services';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import Toast from 'react-native-toast-message';
-import { LoadingState } from './useVideos';
+import { YouTubeVideoSearchItemsModel } from '@/models/youtubeVideo.model';
+import { toastService } from '@/services/toast.services';
+import { searchVideos } from '@/services/youtube.services';
+import { FetchYouTubeVideoParams } from '@/types/youtubeApi.types';
+import { extractAxiosErrorMessage } from '@/utils/errorUtil';
+import { Status } from './useShowToast';
 
 export function useYouTubeVideo(channelId?: string) {
   const [videos, setVideos] = useState<YouTubeVideoSearchItemsModel[]>([]);
   const [nextPageToken, setNextPageToken] = useState<string | null>(null);
-  const [loadingState, setLoadingState] = useState<LoadingState>({
-    isLoading: false,
-    isRefreshing: false,
-    isLoadingMore: false,
-  });
-  const setLoadingFlags = useCallback(
-    (state: Partial<LoadingState>) => setLoadingState((prev) => ({ ...prev, ...state })),
-    [],
-  );
+  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchYouTubeVideo = async (pageToken?: string, isRefresh = false) => {
+  const fetchYouTubeVideo = async ({ pageToken, isRefresh = false }: FetchYouTubeVideoParams) => {
     try {
-      if (!pageToken && !isRefresh) setLoadingFlags({ isLoading: true });
-      if (isRefresh) setLoadingFlags({ isRefreshing: true });
-      if (pageToken && !isRefresh) setLoadingFlags({ isLoadingMore: true });
+      setIsLoading(true);
 
       const res = await searchVideos({
         query: 'nhạc remix',
@@ -31,44 +23,53 @@ export function useYouTubeVideo(channelId?: string) {
       });
 
       let { items, nextPageToken: newPageToken } = res;
-
+      if (items.length === 0) {
+        if (!pageToken || isRefresh) {
+          toastService.showToast(Status.error, 'Không có video phù hợp');
+          setVideos([]);
+        } else {
+          toastService.showToast(Status.error, 'Không có video để tải thêm');
+        }
+        return;
+      }
       if (isRefresh || !pageToken) {
         items = items.sort(() => 0.5 - Math.random());
         setVideos(items);
       } else {
         setVideos((prev) => [...prev, ...items]);
       }
-
       setNextPageToken(newPageToken || null);
-    } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.message,
-      });
+    } catch (error) {
+      extractAxiosErrorMessage(error);
+      if (!pageToken || isRefresh) {
+        setVideos([]);
+      }
     } finally {
-      setLoadingFlags({ isLoading: false, isLoadingMore: false, isRefreshing: false });
+      setIsLoading(false);
     }
   };
 
   const pullToRefresh = async () => {
-    await fetchYouTubeVideo(undefined, true);
+    await fetchYouTubeVideo({ pageToken: undefined, isRefresh: true });
   };
 
-  const handleLoadMoreVideos = debounce(async () => {
-    if (nextPageToken) {
-      await fetchYouTubeVideo(nextPageToken);
-    }
-  }, 1000);
+  const handleLoadMoreVideos = useCallback(
+    debounce(async () => {
+      if (nextPageToken && !isLoading) {
+        await fetchYouTubeVideo({ pageToken: nextPageToken });
+      }
+    }, 1000),
+    [nextPageToken],
+  );
 
   useEffect(() => {
-    fetchYouTubeVideo();
+    fetchYouTubeVideo({ pageToken: undefined, isRefresh: false });
   }, []);
 
   return {
     videos,
     pullToRefresh,
     handleLoadMoreVideos,
-    ...loadingState,
+    isLoading,
   };
 }

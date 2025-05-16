@@ -1,7 +1,4 @@
 import { VIDEO_HEIGHT, VIDEO_WIDTH } from './Video';
-
-export const API_KEY = 'AIzaSyA8fcAt6gHvJWywSEHae4i0Ns01xCrOj-s';
-export const BASE_URL = 'https://www.googleapis.com/youtube/v3';
 export const MAX_RESULTS = 20;
 export const PART = 'snippet';
 export const TYPE = 'video';
