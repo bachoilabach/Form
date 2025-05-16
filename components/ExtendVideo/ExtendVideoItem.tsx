@@ -1,12 +1,12 @@
+import { Image } from 'expo-image';
+import { router } from 'expo-router';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { VIDEO_WIDTH } from '@/constants/Video';
 import { YOUTUBE_VIDEO_HEIGHT } from '@/constants/YouTubeVideo';
 import { ExtendVideoModel } from '@/models/extend.model';
 import { changeTime } from '@/utils/extendVideo';
-import { Image } from 'expo-image';
-import { router } from 'expo-router';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const ExtendVideoItem = (extendVideoProps: ExtendVideoModel) => {
   const { thumbnail, title, duration, releaseYear, author, id, url } = extendVideoProps;

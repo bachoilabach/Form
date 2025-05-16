@@ -17,12 +17,12 @@ export const Colors = {
     activityIndicatorColor: '#fff',
     textButton: '#EEEEEE',
     button: '#33CCFF',
-    controlOverlay: "rgba(0,0,0,0.3)",
+    controlOverlay: 'rgba(0,0,0,0.3)',
     backgroundPlayPauseButton: 'rgba(0,0,0,0.6)',
     progressBar: '#444',
     bufferBar: '#888',
     playedBar: '#cd201f',
-    backgroundDuration: '#020304'
+    backgroundDuration: '#020304',
   },
   dark: {
     text: '#ECEDEE',
@@ -32,6 +32,10 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
     backgroundVideos: 'black',
+  },
+  toast: {
+    success: '#4CAF50',
+    error: '#F44336',
   },
 };
 

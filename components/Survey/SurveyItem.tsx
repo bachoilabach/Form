@@ -1,7 +1,7 @@
-import { Gender } from '@/enums/Gender';
-import { SurveyResponse } from '@/models/survey.model';
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Gender } from '@/enums/Gender';
+import { SurveyResponse } from '@/models/survey.model';
 const { width } = Dimensions.get('window');
 const SurveyItem = (props: SurveyResponse) => {
   const { fullName, email, age, gender, feedback, phoneNumber, dateOfBirth, rating, today, agree } =

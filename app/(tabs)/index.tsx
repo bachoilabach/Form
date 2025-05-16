@@ -1,6 +1,3 @@
-import SurveyItem from '@/components/Survey/SurveyItem';
-import { Colors } from '@/constants/Colors';
-import { useSurvey } from '@/hooks/useSurvey';
 import { router } from 'expo-router';
 import {
   ActivityIndicator,
@@ -13,6 +10,9 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import SurveyItem from '@/components/Survey/SurveyItem';
+import { Colors } from '@/constants/Colors';
+import { useSurvey } from '@/hooks/useSurvey';
 
 export default function HomeScreen() {
   const { loading, surveys, isRefreshing, pullToRefresh } = useSurvey();

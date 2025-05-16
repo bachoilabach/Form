@@ -1,6 +1,3 @@
-import { SuccessIcon } from '@/assets/icons/SvgIcon';
-import { Gender } from '@/enums/Gender';
-import { useSurveySelector } from '@/stores/surveySelector/surveySelector';
 import { useNavigation } from 'expo-router';
 import React from 'react';
 import {
@@ -11,6 +8,9 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { SuccessIcon } from '@/assets/icons/SvgIcon';
+import { Gender } from '@/enums/Gender';
+import { useSurveySelector } from '@/stores/surveySelector/surveySelector';
 const ModalSuccess = () => {
   const { isSuccessModalOpen, closeSuccessModal, submittedSurvey } = useSurveySelector();
   const navigation = useNavigation();

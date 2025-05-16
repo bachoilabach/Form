@@ -1,6 +1,3 @@
-import YouTubeVideoList from '@/components/Video/YouTubeVideoList';
-import { NUMBER_OF_LINES, YOUTUBE_VIDEO_HEIGHT } from '@/constants/YouTubeVideo';
-import { useYouTubeVideoDetail } from '@/hooks/useYouTubeVideoDetail';
 import { useRoute } from '@react-navigation/native';
 import React, { memo } from 'react';
 import {
@@ -12,11 +9,14 @@ import {
   View,
 } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import YouTubeVideoList from '@/components/Video/YouTubeVideoList';
+import { NUMBER_OF_LINES, YOUTUBE_VIDEO_HEIGHT } from '@/constants/YouTubeVideo';
+import { useYouTubeVideoDetail } from '@/hooks/useYouTubeVideoDetail';
 import VideoSnippet from '../(modals)/video-snippet';
 
 const VIDEO_WIDTH = Dimensions.get('window').width;
 
-export default memo(function YouTubeVideoDetail() {
+const YouTubeVideoDetail = () => {
   const { params } = useRoute();
   const { videoId, title } = params as { videoId: string; title: string };
   const {
@@ -64,7 +64,8 @@ export default memo(function YouTubeVideoDetail() {
       )}
     </>
   );
-});
+};
+export default memo(YouTubeVideoDetail);
 
 const styles = StyleSheet.create({
   container: {

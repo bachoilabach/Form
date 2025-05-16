@@ -1,17 +1,17 @@
+import { Image } from 'expo-image';
+import { VideoView } from 'expo-video';
+import { memo } from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { PlayIcon } from '@/assets/icons/SvgIcon';
 import { Colors } from '@/constants/Colors';
 import { VIDEO_HEIGHT, VIDEO_WIDTH } from '@/constants/Video';
 import { useVideoCard } from '@/hooks/useVideoCard';
 import { VideoCardProps } from '@/models/video.model';
-import { Image } from 'expo-image';
-import { VideoView } from 'expo-video';
-import { memo } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default memo(function VideoCard(videoProps: VideoCardProps) {
   const { video, index, currentVisibleIndex } = videoProps;
   const {
-    handlePlayOrPause,
+    togglePlay,
     videoLandScape,
     player,
     isPlaying,
@@ -24,7 +24,7 @@ export default memo(function VideoCard(videoProps: VideoCardProps) {
   return (
     <View style={[styles.card, paddingBottomVideoCard]}>
       {player && (
-        <Pressable onPress={handlePlayOrPause}>
+        <Pressable onPress={togglePlay}>
           <VideoView
             style={[videoLandScape]}
             player={player}

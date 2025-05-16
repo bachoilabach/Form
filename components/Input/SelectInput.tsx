@@ -1,8 +1,8 @@
-import { useInput } from '@/hooks/useInput';
 import React, { memo } from 'react';
 import { Controller } from 'react-hook-form';
 import { StyleSheet, Text } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useInput } from '@/hooks/useInput';
 interface SelectInputProps {
   title: string;
   control?: any;

@@ -1,10 +1,3 @@
-import { DURATION_VIDEO_SNIPPET } from '@/constants/Video';
-import {
-  VIDEO_SNIPPET_HEIGHT,
-  VIDEO_SNIPPET_OFFSET,
-  VIDEO_SNIPPET_THRESHOLD,
-} from '@/constants/YouTubeVideo';
-import { VideoSnippetModel } from '@/models/youtube_video.model';
 import React, { useEffect, useRef } from 'react';
 import {
   Animated,
@@ -15,6 +8,13 @@ import {
   Text,
   View,
 } from 'react-native';
+import { DURATION_VIDEO_SNIPPET } from '@/constants/Video';
+import {
+  VIDEO_SNIPPET_HEIGHT,
+  VIDEO_SNIPPET_OFFSET,
+  VIDEO_SNIPPET_THRESHOLD,
+} from '@/constants/YouTubeVideo';
+import { VideoSnippetModel } from '@/models/youtubeVideo.model';
 export type VideoSnippetModal = {
   onClose: () => void;
   snippet: VideoSnippetModel;
