@@ -1,32 +1,18 @@
-import { initPage, ITEM_VISIBLE_PERCENT_THRESHOLD } from '@/constants/Video';
-import { VideoModel } from '@/models/video.model';
-import { getVideos } from '@/services/video.services';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Toast from 'react-native-toast-message';
-
-export type LoadingState = {
-  isLoading: boolean;
-  isRefreshing: boolean;
-  isLoadingMore: boolean;
-};
+import { initPage, ITEM_VISIBLE_PERCENT_THRESHOLD } from '@/constants/Video';
+import { VideoModel } from '@/models/video.model';
+import { toastService } from '@/services/toast.services';
+import { getVideos } from '@/services/video.services';
+import { extractAxiosErrorMessage } from '@/utils/errorUtil';
+import { Status } from './useShowToast';
 
 export function useVideos() {
   const [videoList, setVideoList] = useState<VideoModel[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(initPage);
   const [currentVisibleIndex, setCurrentVisibleIndex] = useState<number>(0);
-
-  const [loadingState, setLoadingState] = useState<LoadingState>({
-    isLoading: false,
-    isRefreshing: false,
-    isLoadingMore: false,
-  });
-
-  const setLoadingFlags = useCallback(
-    (state: Partial<LoadingState>) => setLoadingState((prev) => ({ ...prev, ...state })),
-    [],
-  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const cacheVideoList = useCallback(async (videos: VideoModel[]) => {
     try {
@@ -61,17 +47,21 @@ export function useVideos() {
     }
   }, []);
 
-  const fetchVideos = async (requestedPage: number) => {
-    const isInitial = requestedPage === initPage && !loadingState.isRefreshing;
+  const fetchVideos = async (requestedPage: number, isRefresh = false) => {
+    const isInitialLoad = requestedPage === initPage && !isRefresh;
+    if (isLoading) return;
 
     try {
-      if (isInitial) setLoadingFlags({ isLoading: true });
-      else setLoadingFlags({ isLoadingMore: true });
-
+      setIsLoading(true);
       const res = await getVideos(requestedPage);
+      if ((!res || res.length === 0) && requestedPage === initPage) {
+        toastService.showToast(Status.error, 'Không có video nào');
+        setVideoList([]);
+        return;
+      }
       const { hits } = res;
 
-      if (requestedPage === initPage) {
+      if (isRefresh || isInitialLoad) {
         setVideoList(hits);
         cacheVideoList(hits);
       } else {
@@ -81,23 +71,24 @@ export function useVideos() {
           return updatedList;
         });
       }
-
       setCurrentPage(requestedPage);
-    } catch (error: any) {
-      Toast.show({ type: 'error', text1: error.message });
+    } catch (error) {
+      extractAxiosErrorMessage(error);
+      if (requestedPage === initPage) {
+        setVideoList([]);
+      }
     } finally {
-      setLoadingFlags({ isLoading: false, isLoadingMore: false, isRefreshing: false });
+      setIsLoading(false);
     }
   };
 
   const pullToRefresh = useCallback(async () => {
-    setLoadingFlags({ isRefreshing: true });
     await AsyncStorage.removeItem('cachedVideos');
-    await fetchVideos(initPage);
+    await fetchVideos(initPage, true);
   }, []);
 
   const handleLoadMoreVideos = debounce(async () => {
-    if (Object.values(loadingState).some(Boolean)) return;
+    if (isLoading) return;
     const nextPage = currentPage + 1;
     await fetchVideos(nextPage);
   }, 1000);
@@ -127,7 +118,7 @@ export function useVideos() {
 
   return {
     videoList,
-    ...loadingState,
+    isLoading,
     fetchVideos,
     handleLoadMoreVideos,
     pullToRefresh,

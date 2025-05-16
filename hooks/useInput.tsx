@@ -1,6 +1,6 @@
-import { Mode } from '@/components/Input/DateInput';
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
+import { Mode } from '@/components/Input/DateInput';
 
 export function useInput() {
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);
